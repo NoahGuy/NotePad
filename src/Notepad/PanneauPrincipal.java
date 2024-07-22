@@ -22,4 +22,12 @@ public class PanneauPrincipal extends JPanel {
     public JTextArea getText() {
         return text;
     }
+
+    public void setText(String text) {
+        this.text.setText(text);
+    }
+
+    public void append(String s) {
+        text.append(s);
+    }
 }

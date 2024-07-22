@@ -6,17 +6,17 @@ import java.awt.*;
 public class CadreGUI extends JFrame {
     private PanneauPrincipal panneauPrincipal;
     private MonJMenuBar monMenuBar;
-    private FonctionsFichier fichier;
+    private Fonctions fichier;
     private Shortcuts keyListener;
     private JLabel statusLabel;
 
     public CadreGUI() {
-        fichier = new FonctionsFichier(this);
+        fichier = new Fonctions(this);
         monMenuBar = new MonJMenuBar(this);
         panneauPrincipal = new PanneauPrincipal();
         keyListener = new Shortcuts(this);
 
-        setTitle("Bloc note");
+        setTitle(fichier.nomFichier);
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setJMenuBar(monMenuBar);
@@ -36,9 +36,26 @@ public class CadreGUI extends JFrame {
         return panneauPrincipal;
     }
 
-    public FonctionsFichier getFichier() {
+    public Fonctions getFichier() {
         return fichier;
     }
+
+    public Fonctions getOuvrir(){
+        return fichier;
+    }
+    public Fonctions getSave(){
+        return fichier;
+    }
+    public Fonctions getSaveAS(){
+        return fichier;
+    }
+    public Fonctions getZoomIn(){
+        return fichier;
+    }
+    public Fonctions getZoomOut(){
+        return fichier;
+    }
+
 
     public void setStatus(String status) {
         statusLabel.setText(status);

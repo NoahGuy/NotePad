@@ -10,6 +10,8 @@ import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.*;
 
+import static Notepad.Fonctions.*;
+
 public class Shortcuts  {
     private CadreGUI gui;
     private JTextArea textArea;
@@ -26,21 +28,6 @@ public class Shortcuts  {
         bindCtrlF();
     }
 
-    private void bindCtrlF() {
-
-        textArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK), "Search");
-        textArea.getActionMap().put("Search", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                Cadre cadre = new Cadre("Rechercher/Remplacer");
-
-		        // On passe la référence pour démarrage de l'application.
-		        SwingUtilities.invokeLater(cadre);
-            }
-        });
-    }
 
     private void initComposants(CadreGUI gui) {
 
@@ -49,6 +36,24 @@ public class Shortcuts  {
         undoManager = new UndoManager();
         doc = textArea.getDocument();
     }
+
+
+    private void bindCtrlF() {
+
+        textArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK), "Search");
+        textArea.getActionMap().put("Search", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                rechercher();
+
+
+            }
+        });
+    }
+
+
 
     private void bindUndoRedo() {
 
@@ -145,24 +150,24 @@ public class Shortcuts  {
     /**
      *
      */
-    private void zoomIn() {//gpt
-
-        Font currentFont = textArea.getFont();
-        float newSize = currentFont.getSize() + 2.0f;
-        textArea.setFont(currentFont.deriveFont(newSize));
-        gui.setStatus("ZOOM");
-    }
-
-    /**
-     *
-     */
-    private void zoomOut() {//gpt
-
-        Font currentFont = textArea.getFont();
-        float newSize = currentFont.getSize() - 2.0f;
-        if (newSize > 0) {
-            textArea.setFont(currentFont.deriveFont(newSize));
-            gui.setStatus("DEZOOM");
-        }
-    }
+//    private void zoomIn() {//gpt
+//
+//        Font currentFont = textArea.getFont();
+//        float newSize = currentFont.getSize() + 2.0f;
+//        textArea.setFont(currentFont.deriveFont(newSize));
+//        gui.setStatus("ZOOM");
+//    }
+//
+//    /**
+//     *
+//     */
+//    private void zoomOut() {//gpt
+//
+//        Font currentFont = textArea.getFont();
+//        float newSize = currentFont.getSize() - 2.0f;
+//        if (newSize > 0) {
+//            textArea.setFont(currentFont.deriveFont(newSize));
+//            gui.setStatus("DEZOOM");
+//        }
+//    }
 }
