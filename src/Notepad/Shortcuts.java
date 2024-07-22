@@ -17,6 +17,7 @@ public class Shortcuts  {
     private JTextArea textArea;
     private UndoManager undoManager;
     private Document doc;
+    private Fonctions fonctions;
 
 
     public Shortcuts(CadreGUI gui) {
@@ -46,7 +47,7 @@ public class Shortcuts  {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                rechercher();
+                gui.getFonctions().rechercher();
 
 
             }
@@ -82,9 +83,11 @@ public class Shortcuts  {
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (e.isControlDown()) {
                     if (e.getWheelRotation() < 0) {
-                        zoomIn();
+
+                        gui.getFonctions().zoomIn();
                     } else {
-                        zoomOut();
+
+                        gui.getFonctions().zoomOut();
                     }
                 }
             }
@@ -128,7 +131,7 @@ public class Shortcuts  {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                zoomOut();
+                gui.getFonctions().zoomOut();
             }
         });
     }
@@ -142,32 +145,9 @@ public class Shortcuts  {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                zoomIn();
+                gui.getFonctions().zoomIn();
             }
         });
     }
 
-    /**
-     *
-     */
-//    private void zoomIn() {//gpt
-//
-//        Font currentFont = textArea.getFont();
-//        float newSize = currentFont.getSize() + 2.0f;
-//        textArea.setFont(currentFont.deriveFont(newSize));
-//        gui.setStatus("ZOOM");
-//    }
-//
-//    /**
-//     *
-//     */
-//    private void zoomOut() {//gpt
-//
-//        Font currentFont = textArea.getFont();
-//        float newSize = currentFont.getSize() - 2.0f;
-//        if (newSize > 0) {
-//            textArea.setFont(currentFont.deriveFont(newSize));
-//            gui.setStatus("DEZOOM");
-//        }
-//    }
 }

@@ -10,7 +10,7 @@ import java.io.FileWriter;
 
 public class Fonctions {
 
-    private static CadreGUI cadre;
+    private CadreGUI cadre;
     protected String nomFichier;
     private String adresseFichier;
 
@@ -86,19 +86,19 @@ public class Fonctions {
         }
     }
 
-    public static void zoomIn() {
+    public void zoomIn() {
         Font currentFont = cadre.getPanneauPrincipal().getText().getFont();
         float newSize = currentFont.getSize() + 2.0f;
         cadre.getPanneauPrincipal().getText().setFont(currentFont.deriveFont(newSize));
     }
 
-    public static void zoomOut() {
+    public void zoomOut() {
         Font currentFont = cadre.getPanneauPrincipal().getText().getFont();
         float newSize = Math.max(currentFont.getSize() - 2.0f, 8.0f); // Limite minimale à 8 pour éviter une taille de police trop petite
         cadre.getPanneauPrincipal().getText().setFont(currentFont.deriveFont(newSize));
     }
 
-    public static void rechercher() {
+    public void rechercher() {
 
         Cadre cadre = new Cadre("Rechercher/Remplacer");
 

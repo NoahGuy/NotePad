@@ -95,20 +95,15 @@ public class MonJMenuBar extends JMenuBar implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if (command.equals("Nouveau")) {
-            cadre.getFichier().nouveauFichier();
-        } else if (command.equals("Ouvrir")) {
-            cadre.getOuvrir().ouvrirFichier();
-        } else if (command.equals("Sauvegarder")) {
-            cadre.getSave().save();
-        } else if (command.equals("Sauvegarder en tant que")) { // Correspond à l'action command
-            cadre.getSaveAS().saveAs();
-        } else if (command.equals("Quitter")) {
-            System.exit(0);
-        } else if (command.equals("Zoom in")) {
-            cadre.getZoomIn().zoomIn();
-        } else if (command.equals("Zoom out")) {
-            cadre.getZoomOut().zoomOut();
+        switch (command) {
+            case "Nouveau" -> cadre.getFonctions().nouveauFichier();
+            case "Ouvrir" -> cadre.getFonctions().ouvrirFichier();
+            case "Sauvegarder" -> cadre.getFonctions().save();
+            case "Sauvegarder en tant que" ->  // Correspond à l'action command
+                    cadre.getFonctions().saveAs();
+            case "Quitter" -> System.exit(0);
+            case "Zoom in" -> cadre.getFonctions().zoomIn();
+            case "Zoom out" -> cadre.getFonctions().zoomOut();
         }
     }
 }
