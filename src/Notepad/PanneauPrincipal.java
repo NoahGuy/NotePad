@@ -6,6 +6,7 @@ import java.awt.*;
 public class PanneauPrincipal extends JPanel {
     private JTextArea text;
     private JScrollPane scroll;
+    private BarreEtat barreEtat;
 
     public PanneauPrincipal() {
         initComposants();
@@ -17,9 +18,12 @@ public class PanneauPrincipal extends JPanel {
         scroll = new JScrollPane(text, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setBorder(BorderFactory.createEmptyBorder());
         add(scroll, BorderLayout.CENTER);
+
+        barreEtat = new BarreEtat(this);
+        add(barreEtat, BorderLayout.SOUTH);
     }
 
-    public JTextArea getText() {
+    public JTextArea getTextArea() {
         return text;
     }
 
@@ -29,5 +33,9 @@ public class PanneauPrincipal extends JPanel {
 
     public void append(String s) {
         text.append(s);
+    }
+
+    public BarreEtat getBarreEtat() {
+        return barreEtat;
     }
 }

@@ -33,7 +33,7 @@ public class Shortcuts  {
     private void initComposants(CadreGUI gui) {
 
         this.gui = gui;
-        textArea = gui.getPanneauPrincipal().getText();
+        textArea = gui.getPanneauPrincipal().getTextArea();
         undoManager = new UndoManager();
         doc = textArea.getDocument();
     }

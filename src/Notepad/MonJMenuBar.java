@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MonJMenuBar extends JMenuBar implements ActionListener {
     private JMenu menu;
@@ -89,6 +91,8 @@ public class MonJMenuBar extends JMenuBar implements ActionListener {
         itemZoomOut.addActionListener(this);
         itemZoomOut.setActionCommand("Zoom out");
         menuAfficher.add(itemZoomOut);
+
+
     }
 
 
@@ -96,14 +100,41 @@ public class MonJMenuBar extends JMenuBar implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         switch (command) {
-            case "Nouveau" -> cadre.getFonctions().nouveauFichier();
-            case "Ouvrir" -> cadre.getFonctions().ouvrirFichier();
-            case "Sauvegarder" -> cadre.getFonctions().save();
-            case "Sauvegarder en tant que" ->  // Correspond à l'action command
-                    cadre.getFonctions().saveAs();
-            case "Quitter" -> System.exit(0);
-            case "Zoom in" -> cadre.getFonctions().zoomIn();
-            case "Zoom out" -> cadre.getFonctions().zoomOut();
+            case "Nouveau":
+                cadre.getFonctions().nouveauFichier();
+                break;
+
+            case "Ouvrir":
+                cadre.getFonctions().ouvrirFichier();
+                break;
+
+            case "Sauvegarder":
+                cadre.getFonctions().save();
+                break;
+
+            case "Sauvegarder en tant que":
+                cadre.getFonctions().saveAs();
+                break;
+
+            case "Quitter":
+                System.exit(0);
+                break;
+
+            case "Zoom in":
+
+                cadre.getFonctions().zoomIn();
+                menuAfficher.doClick(); // garde le JMenu ouvert quand on clique sur zoom in
+                break;
+
+            case "Zoom out":
+
+                cadre.getFonctions().zoomOut();
+                menuAfficher.doClick(); // garde le JMenu ouvert quand on clique sur zoom out
+                break;
+
+            case "Barre état":
+
+                cadre.getFonctions().enleverRemettreBarreEtat();
         }
     }
 }

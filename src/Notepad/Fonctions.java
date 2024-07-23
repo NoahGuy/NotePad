@@ -3,6 +3,7 @@ package Notepad;
 import Recherche.Cadre;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -13,13 +14,15 @@ public class Fonctions {
     private CadreGUI cadre;
     protected String nomFichier;
     private String adresseFichier;
+    private PanneauPrincipal panneauPrincipal;
 
     public Fonctions(CadreGUI cadre) {
         this.cadre = cadre;
+        this.panneauPrincipal = cadre.getPanneauPrincipal();
     }
 
     public void nouveauFichier() {
-        cadre.getPanneauPrincipal().getText().setText("");
+        cadre.getPanneauPrincipal().getTextArea().setText("");
         cadre.setTitle("Nouvelle page");
         nomFichier = null;
         adresseFichier = null;
@@ -60,7 +63,7 @@ public class Fonctions {
         }else{
             try {
                 FileWriter fw = new FileWriter(adresseFichier + nomFichier);
-                fw.write(cadre.getPanneauPrincipal().getText().getText()); // Correction ici
+                fw.write(cadre.getPanneauPrincipal().getTextArea().getText()); // Correction ici
                 cadre.setTitle(nomFichier);
                 fw.close();
             } catch (Exception e) {
@@ -79,23 +82,34 @@ public class Fonctions {
         }
         try {
             FileWriter fw = new FileWriter(adresseFichier + nomFichier);
-            fw.write(cadre.getPanneauPrincipal().getText().getText()); // Correction ici
+            fw.write(cadre.getPanneauPrincipal().getTextArea().getText()); // Correction ici
             fw.close();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
-
+    //TODO: mettre sous fonction pour le pourcentage zoom
     public void zoomIn() {
-        Font currentFont = cadre.getPanneauPrincipal().getText().getFont();
-        float newSize = currentFont.getSize() + 2.0f;
-        cadre.getPanneauPrincipal().getText().setFont(currentFont.deriveFont(newSize));
+        Font currentFont = cadre.getPanneauPrincipal().getTextArea().getFont();
+        if (currentFont.getSize() < 60) {
+            float newSize = currentFont.getSize() + 2.0f;
+            int pourcentageAugmentation = (int) (100 * (newSize / 12)); //12 est la grandeur defaut
+            cadre.getPanneauPrincipal().getTextArea().setFont(currentFont.deriveFont(newSize));
+
+            cadre.getPanneauPrincipal().getBarreEtat().getZoom().setText(String.valueOf(pourcentageAugmentation) + "% ");
+        }
     }
 
     public void zoomOut() {
-        Font currentFont = cadre.getPanneauPrincipal().getText().getFont();
-        float newSize = Math.max(currentFont.getSize() - 2.0f, 8.0f); // Limite minimale à 8 pour éviter une taille de police trop petite
-        cadre.getPanneauPrincipal().getText().setFont(currentFont.deriveFont(newSize));
+        Font currentFont = cadre.getPanneauPrincipal().getTextArea().getFont();
+        if (currentFont.getSize() > 2) {
+
+            float newSize = currentFont.getSize() - 2.0f; // Limite minimale à 8 pour éviter une taille de police trop petite
+
+            int pourcentageDiminution = (int) (100 * (newSize / 12)); //12 est la grandeur defaut
+            cadre.getPanneauPrincipal().getTextArea().setFont(currentFont.deriveFont(newSize));
+            cadre.getPanneauPrincipal().getBarreEtat().getZoom().setText(String.valueOf(pourcentageDiminution) + "% ");
+        }
     }
 
     public void rechercher() {
@@ -104,5 +118,17 @@ public class Fonctions {
 
         // On passe la référence pour démarrage de l'application.
         SwingUtilities.invokeLater(cadre);
+    }
+
+    public void enleverRemettreBarreEtat() {
+
+        if (cadre.getPanneauPrincipal().getBarreEtat().isVisible()) {
+
+            cadre.getPanneauPrincipal().getBarreEtat().setVisible(false);
+        }
+        else {
+
+            cadre.getPanneauPrincipal().getBarreEtat().setVisible(true);
+        }
     }
 }
