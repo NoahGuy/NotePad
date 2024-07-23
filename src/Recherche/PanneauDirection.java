@@ -1,10 +1,11 @@
 package Recherche;
 
+import java.awt.Color;
+
 import javax.swing.BoxLayout;
-import javax.swing.JRadioButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.*;
 
 /**
  * Travail Pratique 2 INF111
@@ -25,17 +26,17 @@ public class PanneauDirection extends JPanel{
 	private JLabel titre;
 	
 	//L'option d'aller vers l'avant
-	private JRadioButton caseAvant;
+	private JCheckBox caseAvant;
 	
 	//L'option d'aller vers l'arrière
-	private JRadioButton caseArriere;
+	private JCheckBox caseArriere;
 	
 	//Le panneau principal dans lequel ce panneau est ajouté
 	private JPanel panneauPrincipal;
 	
 	/**
 	 * Construit le panneau de direction où les options "avant" et 
-	 * "arrière" (JRadioButton) s'y retrouvent.
+	 * "arrière" (JCheckBox) s'y retrouvent.
 	 *
 	 * @param panneauPrincipal le panneau principal où on ajoute ce panneau.
 	 */
@@ -102,11 +103,11 @@ public class PanneauDirection extends JPanel{
 	 *
 	 * @param caseACocher la case à laquelle la case crée sera assignée.
 	 * 
-	 * @return un JRadioButton associé à celui reçu en paramètre.
+	 * @return un JCheckBox associé à celui reçu en paramètre.
 	 */
-	private JRadioButton nouvelleCase(JRadioButton caseACocher) {
+	private JCheckBox nouvelleCase(JCheckBox caseACocher) {
 		
-		caseACocher = new JRadioButton();
+		caseACocher = new JCheckBox();
 		
 		return caseACocher;
 	}
