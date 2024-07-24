@@ -2,8 +2,7 @@ package Recherche;
 
 import java.awt.*;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * Travail Pratique 2 INF111

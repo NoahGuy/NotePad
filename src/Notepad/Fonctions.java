@@ -2,15 +2,12 @@ package Notepad;
 
 import Recherche.Cadre;
 
-import javax.swing.*;
-import javax.swing.plaf.FontUIResource;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
+import java.nio.file.Files;
+import javax.swing.*;
 
 public class Fonctions {
-
     private CadreGUI cadre;
     protected String nomFichier;
     private String adresseFichier;
@@ -22,113 +19,113 @@ public class Fonctions {
     }
 
     public void nouveauFichier() {
-        cadre.getPanneauPrincipal().getTextArea().setText("");
-        cadre.setTitle("Nouvelle page");
-        nomFichier = null;
-        adresseFichier = null;
+        this.cadre.getPanneauPrincipal().getTextArea().setText("");
+        this.cadre.setTitle("Nouvelle page");
+        this.nomFichier = null;
+        this.adresseFichier = null;
     }
-
-
-
 
     public void ouvrirFichier() {
-        FileDialog fd = new FileDialog(cadre, "Ouvrir", FileDialog.LOAD);
-        fd.setVisible(true);
+        FileDialog fileDialog = new FileDialog((Frame) null, "Select a File", FileDialog.LOAD);
+        fileDialog.setVisible(true);
 
-        if (fd.getFile() != null) {
-            nomFichier = fd.getFile();
-            adresseFichier = fd.getDirectory();
-            cadre.setTitle(nomFichier);
-        }
+        String fileName = fileDialog.getFile();
+        String directory = fileDialog.getDirectory();
 
-        try{
-            BufferedReader br = new BufferedReader(new FileReader(adresseFichier+nomFichier));
-            cadre.getPanneauPrincipal().setText("");
-
-            String ligne;
-
-            while ((ligne = br.readLine()) != null) {
-
-                cadre.getPanneauPrincipal().append(ligne+"\n");
+        if (fileName != null && directory != null) {
+            File file = new File(directory, fileName);
+            try {
+                String content = new String(Files.readAllBytes(file.toPath()));
+                cadre.getPanneauPrincipal().getTextArea().setText(content);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Error reading the file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-            br.close();
-        }catch(Exception e){
-            System.out.println(e);
         }
     }
 
-    public void save(){
-        if(nomFichier == null){
-            saveAs();
-        }else{
+
+
+    public void save() {
+        if (this.nomFichier == null) {
+            this.saveAs();
+        } else {
             try {
-                FileWriter fw = new FileWriter(adresseFichier + nomFichier);
-                fw.write(cadre.getPanneauPrincipal().getTextArea().getText()); // Correction ici
-                cadre.setTitle(nomFichier);
+                FileWriter fw = new FileWriter(this.adresseFichier + this.nomFichier);
+                fw.write(this.cadre.getPanneauPrincipal().getTextArea().getText());
+                this.cadre.setTitle(this.nomFichier);
                 fw.close();
-            } catch (Exception e) {
+            } catch (Exception var2) {
+                Exception e = var2;
                 System.out.println(e);
             }
         }
-    }
-    public void saveAs() {
-        FileDialog fd = new FileDialog(cadre, "Sauvegarder en tant que", FileDialog.SAVE);
-        fd.setVisible(true);
 
+    }
+
+    public void saveAs() {
+        FileDialog fd = new FileDialog(this.cadre, "Sauvegarder en tant que", 1);
+        fd.setVisible(true);
         if (fd.getFile() != null) {
-            nomFichier = fd.getFile();
-            adresseFichier = fd.getDirectory();
-            cadre.setTitle(nomFichier);
+            this.nomFichier = fd.getFile();
+            this.adresseFichier = fd.getDirectory();
+            this.cadre.setTitle(this.nomFichier);
         }
+
         try {
-            FileWriter fw = new FileWriter(adresseFichier + nomFichier);
-            fw.write(cadre.getPanneauPrincipal().getTextArea().getText()); // Correction ici
+            FileWriter fw = new FileWriter(this.adresseFichier + this.nomFichier);
+            fw.write(this.cadre.getPanneauPrincipal().getTextArea().getText());
             fw.close();
-        } catch (Exception e) {
+        } catch (Exception var3) {
+            Exception e = var3;
             System.out.println(e);
         }
-    }
-    //TODO: mettre sous fonction pour le pourcentage zoom
-    public void zoomIn() {
-        Font currentFont = cadre.getPanneauPrincipal().getTextArea().getFont();
-        if (currentFont.getSize() < 60) {
-            float newSize = currentFont.getSize() + 2.0f;
-            int pourcentageAugmentation = (int) (100 * (newSize / 12)); //12 est la grandeur defaut
-            cadre.getPanneauPrincipal().getTextArea().setFont(currentFont.deriveFont(newSize));
 
-            cadre.getPanneauPrincipal().getBarreEtat().getZoom().setText(String.valueOf(pourcentageAugmentation) + "% ");
+    }
+
+    public void quitter() {
+        int option = JOptionPane.showConfirmDialog(cadre, "Voulez-vous quitter et sauvegarder ?", "Quitter", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (option == JOptionPane.YES_OPTION) {
+            saveAs();
+            System.exit(0);
+        } else if (option == JOptionPane.NO_OPTION) {
+            System.exit(0);
         }
+
+    }
+
+    public void zoomIn() {
+        Font currentFont = this.cadre.getPanneauPrincipal().getTextArea().getFont();
+        if (currentFont.getSize() < 60) {
+            float newSize = (float)currentFont.getSize() + 2.0F;
+            int pourcentageAugmentation = (int)(100.0F * (newSize / 12.0F));
+            this.cadre.getPanneauPrincipal().getTextArea().setFont(currentFont.deriveFont(newSize));
+            this.cadre.getPanneauPrincipal().getBarreEtat().getZoom().setText(String.valueOf(pourcentageAugmentation) + "% ");
+        }
+
     }
 
     public void zoomOut() {
-        Font currentFont = cadre.getPanneauPrincipal().getTextArea().getFont();
+        Font currentFont = this.cadre.getPanneauPrincipal().getTextArea().getFont();
         if (currentFont.getSize() > 2) {
-
-            float newSize = currentFont.getSize() - 2.0f; // Limite minimale à 8 pour éviter une taille de police trop petite
-
-            int pourcentageDiminution = (int) (100 * (newSize / 12)); //12 est la grandeur defaut
-            cadre.getPanneauPrincipal().getTextArea().setFont(currentFont.deriveFont(newSize));
-            cadre.getPanneauPrincipal().getBarreEtat().getZoom().setText(String.valueOf(pourcentageDiminution) + "% ");
+            float newSize = (float)currentFont.getSize() - 2.0F;
+            int pourcentageDiminution = (int)(100.0F * (newSize / 12.0F));
+            this.cadre.getPanneauPrincipal().getTextArea().setFont(currentFont.deriveFont(newSize));
+            this.cadre.getPanneauPrincipal().getBarreEtat().getZoom().setText(String.valueOf(pourcentageDiminution) + "% ");
         }
+
     }
 
     public void rechercher() {
-
         Cadre cadre = new Cadre("Rechercher/Remplacer");
-
-        // On passe la référence pour démarrage de l'application.
         SwingUtilities.invokeLater(cadre);
     }
 
     public void enleverRemettreBarreEtat() {
-
-        if (cadre.getPanneauPrincipal().getBarreEtat().isVisible()) {
-
-            cadre.getPanneauPrincipal().getBarreEtat().setVisible(false);
+        if (this.cadre.getPanneauPrincipal().getBarreEtat().isVisible()) {
+            this.cadre.getPanneauPrincipal().getBarreEtat().setVisible(false);
+        } else {
+            this.cadre.getPanneauPrincipal().getBarreEtat().setVisible(true);
         }
-        else {
 
-            cadre.getPanneauPrincipal().getBarreEtat().setVisible(true);
-        }
     }
 }

@@ -1,140 +1,113 @@
 package Notepad;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 public class MonJMenuBar extends JMenuBar implements ActionListener {
     private JMenu menu;
     private JMenu menuModifier;
     private JMenu menuAfficher;
-
     private JMenuItem itemNouveau;
     private JMenuItem itemOuvrir;
     private JMenuItem itemSauvegarder;
     private JMenuItem itemSaveAs;
     private JMenuItem itemQuitter;
-
     private JMenuItem itemBarreEtat;
     private JMenuItem itemZoomIn;
     private JMenuItem itemZoomOut;
-
     private CadreGUI cadre;
     private JLabel statusBar;
 
     public MonJMenuBar(CadreGUI cadre) {
         this.cadre = cadre;
-        creerBarMenu();
-        creerFichierMenu();
-
+        this.creerBarMenu();
+        this.creerFichierMenu();
     }
 
     private void creerBarMenu() {
-        ajouterMenu();
+        this.ajouterMenu();
     }
 
     private void creerFichierMenu() {
-        initcomposant();
+        this.initcomposant();
     }
 
     private void ajouterMenu() {
-        menu = new JMenu("Fichier");
-        add(menu);
-
-        menuModifier = new JMenu("Modifier");
-        add(menuModifier);
-
-        menuAfficher = new JMenu("Affichage");
-        add(menuAfficher);
+        this.menu = new JMenu("Fichier");
+        this.add(this.menu);
+        this.menuModifier = new JMenu("Modifier");
+        this.add(this.menuModifier);
+        this.menuAfficher = new JMenu("Affichage");
+        this.add(this.menuAfficher);
     }
 
     private void initcomposant() {
-        itemNouveau = new JMenuItem("Nouveau");
-        itemNouveau.addActionListener(this);
-        itemNouveau.setActionCommand("Nouveau");
-        menu.add(itemNouveau);
-
-        itemOuvrir = new JMenuItem("Ouvrir");
-        itemOuvrir.addActionListener(this);
-        itemOuvrir.setActionCommand("Ouvrir");
-        menu.add(itemOuvrir);
-
-        itemSauvegarder = new JMenuItem("Sauvegarder");
-        itemSauvegarder.addActionListener(this);
-        itemSauvegarder.setActionCommand("Sauvegarder");
-        menu.add(itemSauvegarder);
-
-        itemSaveAs = new JMenuItem("Sauvegarder en tant que");
-        itemSaveAs.addActionListener(this);
-        itemSaveAs.setActionCommand("Sauvegarder en tant que"); // Correspond à la vérification dans actionPerformed
-        menu.add(itemSaveAs);
-
-        itemQuitter = new JMenuItem("Quitter");
-        itemQuitter.addActionListener(this);
-        itemQuitter.setActionCommand("Quitter");
-        menu.add(itemQuitter);
-
-        itemBarreEtat = new JMenuItem("Barre état");
-        itemBarreEtat.addActionListener(this);
-        itemBarreEtat.setActionCommand("Barre état");
-        menuAfficher.add(itemBarreEtat);
-
-        itemZoomIn = new JMenuItem("Zoom in");
-        itemZoomIn.addActionListener(this);
-        itemZoomIn.setActionCommand("Zoom in");
-        menuAfficher.add(itemZoomIn);
-
-        itemZoomOut = new JMenuItem("Zoom out");
-        itemZoomOut.addActionListener(this);
-        itemZoomOut.setActionCommand("Zoom out");
-        menuAfficher.add(itemZoomOut);
-
-
+        this.itemNouveau = new JMenuItem("Nouveau");
+        this.itemNouveau.addActionListener(this);
+        this.itemNouveau.setActionCommand("Nouveau");
+        this.menu.add(this.itemNouveau);
+        this.itemOuvrir = new JMenuItem("Ouvrir");
+        this.itemOuvrir.addActionListener(this);
+        this.itemOuvrir.setActionCommand("Ouvrir");
+        this.menu.add(this.itemOuvrir);
+        this.itemSauvegarder = new JMenuItem("Sauvegarder");
+        this.itemSauvegarder.addActionListener(this);
+        this.itemSauvegarder.setActionCommand("Sauvegarder");
+        this.menu.add(this.itemSauvegarder);
+        this.itemSaveAs = new JMenuItem("Sauvegarder en tant que");
+        this.itemSaveAs.addActionListener(this);
+        this.itemSaveAs.setActionCommand("Sauvegarder en tant que");
+        this.menu.add(this.itemSaveAs);
+        this.itemQuitter = new JMenuItem("Quitter");
+        this.itemQuitter.addActionListener(this);
+        this.itemQuitter.setActionCommand("Quitter");
+        this.menu.add(this.itemQuitter);
+        this.itemBarreEtat = new JMenuItem("Barre état");
+        this.itemBarreEtat.addActionListener(this);
+        this.itemBarreEtat.setActionCommand("Barre état");
+        this.menuAfficher.add(this.itemBarreEtat);
+        this.itemZoomIn = new JMenuItem("Zoom in");
+        this.itemZoomIn.addActionListener(this);
+        this.itemZoomIn.setActionCommand("Zoom in");
+        this.menuAfficher.add(this.itemZoomIn);
+        this.itemZoomOut = new JMenuItem("Zoom out");
+        this.itemZoomOut.addActionListener(this);
+        this.itemZoomOut.setActionCommand("Zoom out");
+        this.menuAfficher.add(this.itemZoomOut);
     }
 
-
-    @Override
     public void actionPerformed(ActionEvent e) {
-        String command = e.getActionCommand();
-        switch (command) {
+        switch (e.getActionCommand()) {
             case "Nouveau":
-                cadre.getFonctions().nouveauFichier();
+                this.cadre.getFonctions().nouveauFichier();
                 break;
-
             case "Ouvrir":
-                cadre.getFonctions().ouvrirFichier();
+                this.cadre.getFonctions().ouvrirFichier();
                 break;
-
             case "Sauvegarder":
-                cadre.getFonctions().save();
+                this.cadre.getFonctions().save();
                 break;
-
             case "Sauvegarder en tant que":
-                cadre.getFonctions().saveAs();
+                this.cadre.getFonctions().saveAs();
                 break;
-
             case "Quitter":
-                System.exit(0);
+                cadre.getFonctions().quitter();
                 break;
-
             case "Zoom in":
-
-                cadre.getFonctions().zoomIn();
-                menuAfficher.doClick(); // garde le JMenu ouvert quand on clique sur zoom in
+                this.cadre.getFonctions().zoomIn();
+                this.menuAfficher.doClick();
                 break;
-
             case "Zoom out":
-
-                cadre.getFonctions().zoomOut();
-                menuAfficher.doClick(); // garde le JMenu ouvert quand on clique sur zoom out
+                this.cadre.getFonctions().zoomOut();
+                this.menuAfficher.doClick();
                 break;
-
             case "Barre état":
-
-                cadre.getFonctions().enleverRemettreBarreEtat();
+                this.cadre.getFonctions().enleverRemettreBarreEtat();
         }
+
     }
 }

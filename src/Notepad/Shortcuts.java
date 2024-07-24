@@ -1,153 +1,114 @@
 package Notepad;
 
-import Recherche.Cadre;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import javax.swing.*;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.text.Document;
 import javax.swing.undo.UndoManager;
-import java.awt.*;
-import java.awt.event.*;
 
-import static Notepad.Fonctions.*;
-
-public class Shortcuts  {
+public class Shortcuts {
     private CadreGUI gui;
-    private JTextArea textArea;
+    private JTextPane textArea;
     private UndoManager undoManager;
     private Document doc;
     private Fonctions fonctions;
 
-
     public Shortcuts(CadreGUI gui) {
-
-        initComposants(gui);
-
-        bindZoom();
-        bindUndoRedo();
-        bindCtrlF();
+        this.initComposants(gui);
+        this.bindZoom();
+        this.bindUndoRedo();
+        this.bindCtrlF();
     }
-
 
     private void initComposants(CadreGUI gui) {
-
         this.gui = gui;
-        textArea = gui.getPanneauPrincipal().getTextArea();
-        undoManager = new UndoManager();
-        doc = textArea.getDocument();
+        this.textArea = gui.getPanneauPrincipal().getTextArea();
+        this.undoManager = new UndoManager();
+        this.doc = this.textArea.getDocument();
     }
-
 
     private void bindCtrlF() {
-
-        textArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK), "Search");
-        textArea.getActionMap().put("Search", new AbstractAction() {
-            @Override
+        this.textArea.getInputMap(2).put(KeyStroke.getKeyStroke(70, 128), "Search");
+        this.textArea.getActionMap().put("Search", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-
-                gui.getFonctions().rechercher();
-
-
+                Shortcuts.this.gui.getFonctions().rechercher();
             }
         });
     }
 
-
-
     private void bindUndoRedo() {
-
-        doc.addUndoableEditListener(new UndoableEditListener() {
-            @Override
+        this.doc.addUndoableEditListener(new UndoableEditListener() {
             public void undoableEditHappened(UndoableEditEvent e) {
-                undoManager.addEdit(e.getEdit());
+                Shortcuts.this.undoManager.addEdit(e.getEdit());
             }
         });
-        //undo et redo
-        bindCtrlZ();
-        bindCtrlY();
+        this.bindCtrlZ();
+        this.bindCtrlY();
     }
 
     private void bindZoom() {
-
-        bindCtrlEqual();
-        bindCtrlMinus();
-        bindCtrlScroll();
+        this.bindCtrlEqual();
+        this.bindCtrlMinus();
+        this.bindCtrlScroll();
     }
 
     private void bindCtrlScroll() {
-
-        textArea.addMouseWheelListener(new MouseWheelListener() {
-            @Override
+        this.textArea.addMouseWheelListener(new MouseWheelListener() {
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (e.isControlDown()) {
                     if (e.getWheelRotation() < 0) {
-
-                        gui.getFonctions().zoomIn();
+                        Shortcuts.this.gui.getFonctions().zoomIn();
                     } else {
-
-                        gui.getFonctions().zoomOut();
+                        Shortcuts.this.gui.getFonctions().zoomOut();
                     }
                 }
+
             }
         });
     }
 
     private void bindCtrlY() {
-
-        textArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK), "Redo");
-        textArea.getActionMap().put("Redo", new AbstractAction() {
-            @Override
+        this.textArea.getInputMap(2).put(KeyStroke.getKeyStroke(89, 128), "Redo");
+        this.textArea.getActionMap().put("Redo", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                if (undoManager.canRedo()) {
-                    undoManager.redo();
+                if (Shortcuts.this.undoManager.canRedo()) {
+                    Shortcuts.this.undoManager.redo();
                 }
+
             }
         });
     }
 
     private void bindCtrlZ() {
-
-        textArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK), "Undo");
-        textArea.getActionMap().put("Undo", new AbstractAction() {
-            @Override
+        this.textArea.getInputMap(2).put(KeyStroke.getKeyStroke(90, 128), "Undo");
+        this.textArea.getActionMap().put("Undo", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                if (undoManager.canUndo()) {
-                    undoManager.undo();
+                if (Shortcuts.this.undoManager.canUndo()) {
+                    Shortcuts.this.undoManager.undo();
                 }
+
             }
         });
     }
 
     private void bindCtrlMinus() {
-
-        textArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, KeyEvent.CTRL_DOWN_MASK),
-                "zoomout");
-        textArea.getActionMap().put("zoomout", new AbstractAction() {
-            @Override
+        this.textArea.getInputMap(2).put(KeyStroke.getKeyStroke(45, 128), "zoomout");
+        this.textArea.getActionMap().put("zoomout", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-
-                gui.getFonctions().zoomOut();
+                Shortcuts.this.gui.getFonctions().zoomOut();
             }
         });
     }
 
     private void bindCtrlEqual() {
-
-        textArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, KeyEvent.CTRL_DOWN_MASK),
-                "zoomin");
-        textArea.getActionMap().put("zoomin", new AbstractAction() {
-            @Override
+        this.textArea.getInputMap(2).put(KeyStroke.getKeyStroke(61, 128), "zoomin");
+        this.textArea.getActionMap().put("zoomin", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-
-                gui.getFonctions().zoomIn();
+                Shortcuts.this.gui.getFonctions().zoomIn();
             }
         });
     }
-
 }
