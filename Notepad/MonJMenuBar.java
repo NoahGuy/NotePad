@@ -1,11 +1,8 @@
 package Notepad;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class MonJMenuBar extends JMenuBar implements ActionListener {
     private JMenu menu;
@@ -117,7 +114,7 @@ public class MonJMenuBar extends JMenuBar implements ActionListener {
                 break;
 
             case "Quitter":
-                System.exit(0);
+                cadre.getFonctions().quitter();
                 break;
 
             case "Zoom in":

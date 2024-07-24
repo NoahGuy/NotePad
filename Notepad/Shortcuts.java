@@ -1,16 +1,11 @@
 package Notepad;
 
-import Recherche.Cadre;
-
 import javax.swing.*;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.text.Document;
 import javax.swing.undo.UndoManager;
-import java.awt.*;
 import java.awt.event.*;
-
-import static Notepad.Fonctions.*;
 
 public class Shortcuts  {
     private CadreGUI gui;
@@ -27,6 +22,7 @@ public class Shortcuts  {
         bindZoom();
         bindUndoRedo();
         bindCtrlF();
+        bindSave();
     }
 
 
@@ -149,5 +145,36 @@ public class Shortcuts  {
             }
         });
     }
+
+
+    private void bindSave() {
+        bindCtrlS();
+        bindCtrlShiftS();
+    }
+
+    private void bindCtrlShiftS() {
+        textArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK), "SaveAs");
+        textArea.getActionMap().put("SaveAs", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gui.getFonctions().saveAs();
+            }
+        });
+    }
+
+
+
+    private void bindCtrlS() {
+        textArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), "Save");
+        textArea.getActionMap().put("Save", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gui.getFonctions().save();
+            }
+        });
+    }
+
 
 }
