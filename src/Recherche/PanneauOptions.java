@@ -147,4 +147,8 @@ public class PanneauOptions extends JPanel{
 		add(caseIncremental);
 		add(caseExpressionsRegulieres);
 	}
+
+	public JCheckBox getCaseSensibleCasse() {
+		return caseSensibleCasse;
+	}
 }

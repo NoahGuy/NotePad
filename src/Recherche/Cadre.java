@@ -1,5 +1,7 @@
 package Recherche;
 
+import Notepad.Fonctions;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -21,13 +23,17 @@ import javax.swing.JPanel;
 
 public class Cadre extends JFrame implements Runnable {
 	
-	private JPanel panneauPrincipal;
+	private Recherche.PanneauPrincipal panneauPrincipal;
+
+	private Fonctions fonctions;
 	
-	public Cadre(String titre) {
+	public Cadre(String titre, Fonctions fonctions) {
 		
 		super(titre);
 		
 		this.setSize(600, 600);
+
+		this.fonctions = fonctions;
 	}
 
 	/**
@@ -37,7 +43,7 @@ public class Cadre extends JFrame implements Runnable {
 	@Override
 	public void run() {
 		
-		panneauPrincipal = new PanneauPrincipal();
+		panneauPrincipal = new PanneauPrincipal(fonctions);
 		
 		setContentPane(panneauPrincipal);			
 			

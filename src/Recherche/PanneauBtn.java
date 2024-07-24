@@ -1,6 +1,9 @@
 package Recherche;
 
-import java.awt.*;
+import Notepad.Fonctions;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -40,9 +43,13 @@ public class PanneauBtn extends JPanel{
 	private JButton btnSuivant;
 	
 	//Le panneau principal dans lequel ce panneau est ajouté
-	private JPanel panneauPrincipal;
+	private Recherche.PanneauPrincipal panneauPrincipal;
+
+	private Fonctions fonctions;
 	
-	public PanneauBtn(JPanel panneauPrincipal) {
+	public PanneauBtn(PanneauPrincipal panneauPrincipal, Fonctions fonctions) {
+
+		this.fonctions = fonctions;
 		
 		//assigne le panneauPrincipal recu en parametre
 		this.panneauPrincipal = panneauPrincipal;
@@ -112,6 +119,14 @@ public class PanneauBtn extends JPanel{
 		btnRemplacerTout.setText("Remplacer tout");
 		
 		btnSuivant.setText("Suivant");
+
+		btnTrouver.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fonctions.rechercher(panneauPrincipal.getPanneauMots().getMotRecherche(),
+						panneauPrincipal.getPanneauOptions().getCaseSensibleCasse());
+			}
+		});
 	}
 	
 	/**

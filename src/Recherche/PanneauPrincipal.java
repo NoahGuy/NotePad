@@ -1,8 +1,9 @@
 package Recherche;
 
+import Notepad.Fonctions;
+
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import java.awt.*;
 
 
 /**
@@ -22,21 +23,25 @@ import java.awt.*;
 
 public class PanneauPrincipal extends JPanel{
 	
-	private JPanel panneauMots;
+	private PanneauMots panneauMots;
 	
 	private JPanel panneauDirection;
 	
-	private JPanel panneauOptions;
+	private PanneauOptions panneauOptions;
 	
 	private JPanel panneauBtn;
 	
 	private JPanel panneauFermer;
+
+	private Fonctions fonctions;
 	
 	/**
 	 * Constructeur du panneau principal pour la fenêtre de recherche et 
 	 * de remplacement
 	 */
-	public PanneauPrincipal() {
+	public PanneauPrincipal(Fonctions fonctions) {
+
+		this.fonctions = fonctions;
 		
 		// met box layout pour que les panneaux imbriqués soient les uns par
 		// dessus les autres
@@ -61,7 +66,7 @@ public class PanneauPrincipal extends JPanel{
 		// construit le panneau où on insère nos boutons et lui passe le 
 		// panneau principal en paramètre pour qu'on puisse interagir
 		// entre nos classes de panneaux
-		panneauBtn = new PanneauBtn(this);
+		panneauBtn = new PanneauBtn(this, this.fonctions);
 		
 		// construit le panneau où on insère notre boutons qui ferme la
 		// fenêtre et lui passe le panneau principal en paramètre pour 
@@ -74,6 +79,14 @@ public class PanneauPrincipal extends JPanel{
 		add(panneauOptions);
 		add(panneauBtn);
 		add(panneauFermer);
+	}
+
+	public PanneauMots getPanneauMots() {
+		return panneauMots;
+	}
+
+	public PanneauOptions getPanneauOptions() {
+		return panneauOptions;
 	}
 }
 

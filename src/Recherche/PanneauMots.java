@@ -295,4 +295,9 @@ public class PanneauMots extends JPanel{
 		
 		remplacer.setText("Remplacer avec:");
 	}
+
+	public String getMotRecherche() {
+
+		return (String) saisieTrouver.getSelectedItem();
+	}
 }

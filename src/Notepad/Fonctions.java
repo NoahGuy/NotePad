@@ -6,12 +6,25 @@ import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 public class Fonctions {
     private CadreGUI cadre;
     protected String nomFichier;
     private String adresseFichier;
     private PanneauPrincipal panneauPrincipal;
+
+    //pour la recherche
+    private SimpleAttributeSet rouge;
+    private SimpleAttributeSet vert;
+    private SimpleAttributeSet jaune;
+    private SimpleAttributeSet defaut;
+    private StyledDocument doc;
+    private String texte;
+    private String chaineARechercher;
+    private int dernierePositionTrouve = 0;
 
     public Fonctions(CadreGUI cadre) {
         this.cadre = cadre;
@@ -115,8 +128,8 @@ public class Fonctions {
 
     }
 
-    public void rechercher() {
-        Cadre cadre = new Cadre("Rechercher/Remplacer");
+    public void ouvrirPanneauRecherche(Fonctions fonctions) {
+        Cadre cadre = new Cadre("Rechercher/Remplacer", fonctions);
         SwingUtilities.invokeLater(cadre);
     }
 
@@ -126,6 +139,100 @@ public class Fonctions {
         } else {
             this.cadre.getPanneauPrincipal().getBarreEtat().setVisible(true);
         }
+    }
 
+    public void rechercher(String chaineARechercher, JCheckBox caseSensibleCasse) {
+
+        this.chaineARechercher = chaineARechercher;
+        // on prend Le texte qu'on a ecris dans le JTextPane en String
+        //JTextPane leText = cadre.getPanneauPrincipal().getTextArea();
+        texte = cadre.getPanneauPrincipal().getTextArea().getText();
+        doc = cadre.getPanneauPrincipal().getTextArea().getStyledDocument();
+
+        // le style pour surligner le JTextPane en rouge
+        rouge = new SimpleAttributeSet();
+        StyleConstants.setBackground(rouge, Color.RED);
+
+        // le style pour surligner le JTextPane en vert
+        vert = new SimpleAttributeSet();
+        StyleConstants.setBackground(vert, Color.GREEN);
+
+        // le style pour surligner le JTextPane en jaune
+        jaune = new SimpleAttributeSet();
+        StyleConstants.setBackground(jaune, Color.YELLOW);
+
+        defaut = new SimpleAttributeSet();
+
+        // on prend ce qu'on a ecris dans la barre de recherche en
+        // String
+        //chaineCaratereRecherchee = barRecherche.getText();
+
+        // on obtient la position du curseur actuel
+        int positionCurseur = cadre.getPanneauPrincipal().getTextArea().getCaretPosition();
+
+        // apres une nouvelle recherche, on remet le texte à son style par defaut
+        doc.setCharacterAttributes(0, doc.getLength(), defaut, true);
+
+        // on surligne en Rouge où se trouve le curseur
+        doc.setCharacterAttributes(positionCurseur, 1, rouge, true);
+
+
+        // si le check box pour case sensitive n'est pas coché alors
+        // on transforme le text et la chaine de caractère recherchee
+        // tout en minuscule
+        if (!caseSensibleCasse.isSelected()) {
+
+            chaineARechercher = chaineARechercher.toLowerCase();
+            texte = texte.toLowerCase();
+        }
+        // on surligne en jaune tous les occurences
+        surlignerEnJaune();
+
+        // on surligne en vert selon la position du curseur
+        surlignerEnVert();
+    }
+
+    private void surlignerEnVert() {
+
+        // cherche la position de l'occurence après le curseur
+        int index = texte.indexOf(chaineARechercher, dernierePositionTrouve);
+        doc.setCharacterAttributes(index, chaineARechercher.length(), vert, true);
+
+        // si on retrouve plus l'occurence on cherche à partir du premier
+        // caractère
+        if (index < 0){
+
+            dernierePositionTrouve = 0;
+            index = texte.indexOf(chaineARechercher, dernierePositionTrouve);
+        }
+
+        // sinon, on cherche la prochaine occurence et on incrémente la position
+        // du curseur (dernierePositionTrouve)
+        if (index >= 0) {
+
+            doc.setCharacterAttributes(index, chaineARechercher.length(), vert, true);
+            dernierePositionTrouve = index + chaineARechercher.length();
+        }
+    }
+
+    private void surlignerEnJaune() {
+
+        // on transforme le texte ecris en String et remplace les \n par du
+        // vide (car doc.setCharacterAttributes ne les detecte pas)
+        texte = texte.replace("\n","");
+
+        int index = 0;
+
+        // La boucle continue tant qu'une occurrence du mot recherché est
+        // trouvee
+        while ((index = texte.indexOf(chaineARechercher, index)) >= 0) {
+
+            // on surligne le caractère recherchee
+            doc.setCharacterAttributes(index, chaineARechercher.length(), jaune, true);
+
+            // on passe à prochaine occurence
+            index += chaineARechercher.length();
+
+        }
     }
 }

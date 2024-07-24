@@ -107,17 +107,7 @@ public class PanneauPrincipal extends JPanel {
 
 
 
-//                if(!chaineCaratereRecherchee.isEmpty()) {
-//
-//                    // on surligne en jaune tous les occurences
-//                    surlignerEnJaune(chaineCaratereRecherchee);
-//
-//                    // on surligne en rouge à partir du curseur
-//                    doc.setCharacterAttributes(positionCurseur, 1, rouge, true);
-//
-//                    // on surliggne en vert pour la chaine de caractere rechercher après le curseur
-//                    surlignerEnVert(chaineCaratereRecherchee);
-//                }
+
             }
         });
 
@@ -164,6 +154,7 @@ public class PanneauPrincipal extends JPanel {
      */
     private void surlignerEnVert(String motRechercher){
 
+        dernierePositionTrouve =
         // cherche la position de l'occurence après le curseur
         int index = texte.indexOf(motRechercher, dernierePositionTrouve);
         doc.setCharacterAttributes(index, motRechercher.length(), vert, true);

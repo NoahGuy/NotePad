@@ -34,7 +34,7 @@ public class Shortcuts {
         this.textArea.getInputMap(2).put(KeyStroke.getKeyStroke(70, 128), "Search");
         this.textArea.getActionMap().put("Search", new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                Shortcuts.this.gui.getFonctions().rechercher();
+                Shortcuts.this.gui.getFonctions().ouvrirPanneauRecherche(gui.getFonctions());
             }
         });
     }
