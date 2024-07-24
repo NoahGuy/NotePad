@@ -1,0 +1,20 @@
+Pedant le 17 jullet au 24 juillet,
+
+Équipe_70:Souhayl
+          Noah
+	  Simon
+	  Josue
+
+Souhayl a fait les short cut: ctrl+s ctrl+shift+s pour sauvegarder des fichiers
+et ouvrir des ficher et aussi pour le zoom in et zoom out
+
+Noah a harmoniser le code pour que tout soit ensemble c'est à dire on peut voir 
+notre note pad et ouvrir le panneau de recherche et le fermer, mais pas il 
+reste encore intégrer la fonction pour surligner ce qu'on veut rechercher. Et 
+il a fait qu'on puisse afficher la barre d'état ou non.
+
+Josue a fait qu'on puisse surligner en vert la prochaine occurrence du mot 
+qu'on veut rechercher en réappuyant le bouton "rechercher"
+
+Simon a fait que la barre de recherche et remplacer mémorise les mot qu'on 
+recherche ou remplace précédemment. 
