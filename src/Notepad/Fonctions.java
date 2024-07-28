@@ -10,11 +10,16 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import static java.awt.FileDialog.SAVE;
+
 public class Fonctions {
+    private static final int MAX_FONT_SIZE = 60;
+    private static final int MIN_FONT_SIZE = 2;
     private CadreGUI cadre;
     protected String nomFichier;
     private String adresseFichier;
-    private PanneauPrincipal panneauPrincipal;
+    private JTextPane textPane;
+    private BarreEtat barreEtat;
 
     //pour la recherche
     private SimpleAttributeSet rouge;
@@ -24,15 +29,18 @@ public class Fonctions {
     private StyledDocument doc;
     private String texte;
     private String chaineARechercher;
-    private int dernierePositionTrouve = 0;
+    private int dernierePositionTrouve;
 
-    public Fonctions(CadreGUI cadre) {
+    public Fonctions(CadreGUI cadre, JTextPane textPane, BarreEtat barreEtat) {
+
+        this.textPane = textPane;
+
+        this.barreEtat = barreEtat;
         this.cadre = cadre;
-        this.panneauPrincipal = cadre.getPanneauPrincipal();
     }
 
     public void nouveauFichier() {
-        this.cadre.getPanneauPrincipal().getTextArea().setText("");
+        textPane.setText("");
         this.cadre.setTitle("Nouvelle page");
         this.nomFichier = null;
         this.adresseFichier = null;
@@ -49,7 +57,7 @@ public class Fonctions {
             File file = new File(directory, fileName);
             try {
                 String content = new String(Files.readAllBytes(file.toPath()));
-                cadre.getPanneauPrincipal().getTextArea().setText(content);
+                textPane.setText(content);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Error reading the file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -64,7 +72,7 @@ public class Fonctions {
         } else {
             try {
                 FileWriter fw = new FileWriter(this.adresseFichier + this.nomFichier);
-                fw.write(this.cadre.getPanneauPrincipal().getTextArea().getText());
+                fw.write(textPane.getText());
                 this.cadre.setTitle(this.nomFichier);
                 fw.close();
             } catch (Exception var2) {
@@ -76,7 +84,8 @@ public class Fonctions {
     }
 
     public void saveAs() {
-        FileDialog fd = new FileDialog(this.cadre, "Sauvegarder en tant que", 1);
+
+        FileDialog fd = new FileDialog(this.cadre, "Sauvegarder en tant que", SAVE);
         fd.setVisible(true);
         if (fd.getFile() != null) {
             this.nomFichier = fd.getFile();
@@ -86,7 +95,7 @@ public class Fonctions {
 
         try {
             FileWriter fw = new FileWriter(this.adresseFichier + this.nomFichier);
-            fw.write(this.cadre.getPanneauPrincipal().getTextArea().getText());
+            fw.write(textPane.getText());
             fw.close();
         } catch (Exception var3) {
             Exception e = var3;
@@ -107,47 +116,60 @@ public class Fonctions {
     }
 
     public void zoomIn() {
-        Font currentFont = this.cadre.getPanneauPrincipal().getTextArea().getFont();
-        if (currentFont.getSize() < 60) {
+
+        Font currentFont = textPane.getFont();
+
+        if (currentFont.getSize() < MAX_FONT_SIZE) {
+
             float newSize = (float)currentFont.getSize() + 2.0F;
-            int pourcentageAugmentation = (int)(100.0F * (newSize / 12.0F));
-            this.cadre.getPanneauPrincipal().getTextArea().setFont(currentFont.deriveFont(newSize));
-            this.cadre.getPanneauPrincipal().getBarreEtat().getZoom().setText(String.valueOf(pourcentageAugmentation) + "% ");
+
+            int pourcentageAugmentation = calculerPourcentageZoom(newSize);
+
+            textPane.setFont(currentFont.deriveFont(newSize));
+            barreEtat.getZoom().setText(String.valueOf(pourcentageAugmentation) + "% ");
         }
 
     }
 
     public void zoomOut() {
-        Font currentFont = this.cadre.getPanneauPrincipal().getTextArea().getFont();
-        if (currentFont.getSize() > 2) {
+
+        Font currentFont = textPane.getFont();
+
+        if (currentFont.getSize() > MIN_FONT_SIZE) {
+
             float newSize = (float)currentFont.getSize() - 2.0F;
-            int pourcentageDiminution = (int)(100.0F * (newSize / 12.0F));
-            this.cadre.getPanneauPrincipal().getTextArea().setFont(currentFont.deriveFont(newSize));
-            this.cadre.getPanneauPrincipal().getBarreEtat().getZoom().setText(String.valueOf(pourcentageDiminution) + "% ");
+
+            int pourcentageDiminution = calculerPourcentageZoom(newSize);
+
+            textPane.setFont(currentFont.deriveFont(newSize));
+            barreEtat.getZoom().setText(String.valueOf(pourcentageDiminution) + "% ");
         }
 
     }
 
+    private int calculerPourcentageZoom(float newSize) {
+
+        return (int)(100.0F * (newSize / 12.0F));
+    }
+
     public void ouvrirPanneauRecherche(Fonctions fonctions) {
+
         Cadre cadre = new Cadre("Rechercher/Remplacer", fonctions);
         SwingUtilities.invokeLater(cadre);
     }
 
     public void enleverRemettreBarreEtat() {
-        if (this.cadre.getPanneauPrincipal().getBarreEtat().isVisible()) {
-            this.cadre.getPanneauPrincipal().getBarreEtat().setVisible(false);
-        } else {
-            this.cadre.getPanneauPrincipal().getBarreEtat().setVisible(true);
-        }
+
+        barreEtat.setVisible(!barreEtat.isVisible());
     }
 
     public void rechercher(String chaineARechercher, JCheckBox caseSensibleCasse) {
 
         this.chaineARechercher = chaineARechercher;
         // on prend Le texte qu'on a ecris dans le JTextPane en String
-        //JTextPane leText = cadre.getPanneauPrincipal().getTextArea();
-        texte = cadre.getPanneauPrincipal().getTextArea().getText();
-        doc = cadre.getPanneauPrincipal().getTextArea().getStyledDocument();
+        //JTextPane leText = cadre.getPanneauPrincipal().getTextPane();
+        texte = textPane.getText();
+        doc = textPane.getStyledDocument();
 
         // le style pour surligner le JTextPane en rouge
         rouge = new SimpleAttributeSet();
@@ -168,13 +190,14 @@ public class Fonctions {
         //chaineCaratereRecherchee = barRecherche.getText();
 
         // on obtient la position du curseur actuel
-        int positionCurseur = cadre.getPanneauPrincipal().getTextArea().getCaretPosition();
+        int positionCurseur = textPane.getCaretPosition();
+        dernierePositionTrouve = positionCurseur;
 
         // apres une nouvelle recherche, on remet le texte à son style par defaut
         doc.setCharacterAttributes(0, doc.getLength(), defaut, true);
 
-        // on surligne en Rouge où se trouve le curseur
-        doc.setCharacterAttributes(positionCurseur, 1, rouge, true);
+
+
 
 
         // si le check box pour case sensitive n'est pas coché alors
@@ -190,6 +213,9 @@ public class Fonctions {
 
         // on surligne en vert selon la position du curseur
         surlignerEnVert();
+
+        // on surligne en Rouge où se trouve le curseur
+        doc.setCharacterAttributes(positionCurseur, 1, rouge, true);
     }
 
     private void surlignerEnVert() {

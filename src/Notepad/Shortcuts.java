@@ -9,60 +9,82 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.text.Document;
 import javax.swing.undo.UndoManager;
 
+import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+import static java.awt.event.KeyEvent.*;
+import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
+
 public class Shortcuts {
-    private CadreGUI gui;
+
     private JTextPane textArea;
     private UndoManager undoManager;
     private Document doc;
     private Fonctions fonctions;
 
-    public Shortcuts(CadreGUI gui) {
-        this.initComposants(gui);
-        this.bindZoom();
-        this.bindUndoRedo();
-        this.bindCtrlF();
+    public Shortcuts(Fonctions fonctions, JTextPane textPane) {
+
+        initComposants(fonctions, textPane);
+        bindZoom();
+        bindUndoRedo();
+        bindCtrlF();
+        //TODO: bind ctrls and ctrlshifts
     }
 
-    private void initComposants(CadreGUI gui) {
-        this.gui = gui;
-        this.textArea = gui.getPanneauPrincipal().getTextArea();
+    private void initComposants(Fonctions fonctions, JTextPane textPane) {
+
+        this.fonctions = fonctions;
+        this.textArea = textPane;
         this.undoManager = new UndoManager();
         this.doc = this.textArea.getDocument();
     }
 
     private void bindCtrlF() {
-        this.textArea.getInputMap(2).put(KeyStroke.getKeyStroke(70, 128), "Search");
-        this.textArea.getActionMap().put("Search", new AbstractAction() {
+        textArea.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_F, CTRL_DOWN_MASK), "Search");
+
+        textArea.getActionMap().put("Search", new AbstractAction() {
+
             public void actionPerformed(ActionEvent e) {
-                Shortcuts.this.gui.getFonctions().ouvrirPanneauRecherche(gui.getFonctions());
+                fonctions.ouvrirPanneauRecherche(fonctions);
             }
         });
     }
 
     private void bindUndoRedo() {
-        this.doc.addUndoableEditListener(new UndoableEditListener() {
+
+        doc.addUndoableEditListener(new UndoableEditListener() {
+
             public void undoableEditHappened(UndoableEditEvent e) {
+
                 Shortcuts.this.undoManager.addEdit(e.getEdit());
             }
         });
-        this.bindCtrlZ();
-        this.bindCtrlY();
+
+        bindCtrlZ();
+        bindCtrlY();
     }
 
     private void bindZoom() {
-        this.bindCtrlEqual();
-        this.bindCtrlMinus();
-        this.bindCtrlScroll();
+
+        bindCtrlEqual();
+        bindCtrlMinus();
+        bindCtrlScroll();
     }
 
     private void bindCtrlScroll() {
-        this.textArea.addMouseWheelListener(new MouseWheelListener() {
+
+        textArea.addMouseWheelListener(new MouseWheelListener() {
+
             public void mouseWheelMoved(MouseWheelEvent e) {
+
                 if (e.isControlDown()) {
+
                     if (e.getWheelRotation() < 0) {
-                        Shortcuts.this.gui.getFonctions().zoomIn();
-                    } else {
-                        Shortcuts.this.gui.getFonctions().zoomOut();
+
+                        fonctions.zoomIn();
+                    }
+
+                    else {
+
+                        fonctions.zoomOut();
                     }
                 }
 
@@ -71,11 +93,15 @@ public class Shortcuts {
     }
 
     private void bindCtrlY() {
-        this.textArea.getInputMap(2).put(KeyStroke.getKeyStroke(89, 128), "Redo");
-        this.textArea.getActionMap().put("Redo", new AbstractAction() {
+
+        textArea.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_Y, CTRL_DOWN_MASK), "Redo");
+        textArea.getActionMap().put("Redo", new AbstractAction() {
+
             public void actionPerformed(ActionEvent e) {
-                if (Shortcuts.this.undoManager.canRedo()) {
-                    Shortcuts.this.undoManager.redo();
+
+                if (undoManager.canRedo()) {
+
+                   undoManager.redo();
                 }
 
             }
@@ -83,11 +109,15 @@ public class Shortcuts {
     }
 
     private void bindCtrlZ() {
-        this.textArea.getInputMap(2).put(KeyStroke.getKeyStroke(90, 128), "Undo");
-        this.textArea.getActionMap().put("Undo", new AbstractAction() {
+
+        textArea.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_Z, CTRL_DOWN_MASK), "Undo");
+        textArea.getActionMap().put("Undo", new AbstractAction() {
+
             public void actionPerformed(ActionEvent e) {
-                if (Shortcuts.this.undoManager.canUndo()) {
-                    Shortcuts.this.undoManager.undo();
+
+                if (undoManager.canUndo()) {
+
+                    undoManager.undo();
                 }
 
             }
@@ -95,19 +125,24 @@ public class Shortcuts {
     }
 
     private void bindCtrlMinus() {
-        this.textArea.getInputMap(2).put(KeyStroke.getKeyStroke(45, 128), "zoomout");
-        this.textArea.getActionMap().put("zoomout", new AbstractAction() {
+
+        textArea.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_MINUS, CTRL_DOWN_MASK), "zoomout");
+        textArea.getActionMap().put("zoomout", new AbstractAction() {
+
             public void actionPerformed(ActionEvent e) {
-                Shortcuts.this.gui.getFonctions().zoomOut();
+
+                fonctions.zoomOut();
             }
         });
     }
 
     private void bindCtrlEqual() {
-        this.textArea.getInputMap(2).put(KeyStroke.getKeyStroke(61, 128), "zoomin");
+        this.textArea.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_EQUALS, CTRL_DOWN_MASK), "zoomin");
         this.textArea.getActionMap().put("zoomin", new AbstractAction() {
+
             public void actionPerformed(ActionEvent e) {
-                Shortcuts.this.gui.getFonctions().zoomIn();
+
+                fonctions.zoomIn();
             }
         });
     }

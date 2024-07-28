@@ -1,28 +1,34 @@
 package Notepad;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class CadreGUI extends JFrame {
-    private PanneauPrincipal panneauPrincipal = new PanneauPrincipal();
-    private MonJMenuBar monMenuBar = new MonJMenuBar(this);
-    private Fonctions fonctions = new Fonctions(this);
-    private Shortcuts keyListener = new Shortcuts(this);
+    private PanneauPrincipal panneauPrincipal;
+    private Fonctions fonctions;
+    private MonJMenuBar monMenuBar;
+    private Shortcuts keyListener;
 
     public CadreGUI() {
-        this.setTitle(this.fonctions.nomFichier);
-        this.setSize(800, 600);
-        this.setDefaultCloseOperation(3);
-        this.setJMenuBar(this.monMenuBar);
-        this.add(this.panneauPrincipal, "Center");
-        this.setFocusable(true);
-        this.setVisible(true);
+
+        initComposants();
+
+        setTitle(this.fonctions.nomFichier);
+        setSize(800, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setJMenuBar(this.monMenuBar);
+        add(this.panneauPrincipal, "Center");
+        setFocusable(true);
+        setVisible(true);
     }
 
-    public PanneauPrincipal getPanneauPrincipal() {
-        return this.panneauPrincipal;
+    public void initComposants() {
+
+        panneauPrincipal = new PanneauPrincipal();
+
+
+        fonctions = new Fonctions(this, panneauPrincipal.getTextPane(), panneauPrincipal.getBarreEtat());
+        monMenuBar = new MonJMenuBar(fonctions);
+        keyListener = new Shortcuts(fonctions, panneauPrincipal.getTextPane());
     }
 
-    public Fonctions getFonctions() {
-        return this.fonctions;
-    }
 }

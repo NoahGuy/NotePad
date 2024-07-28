@@ -2,43 +2,41 @@ package Notepad;
 
 import java.awt.BorderLayout;
 import javax.swing.*;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.SimpleAttributeSet;
+
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
+import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 
 public class PanneauPrincipal extends JPanel {
-    private JTextPane text;
+    private JTextPane textPane;
     private JScrollPane scroll;
     private BarreEtat barreEtat;
 
     public PanneauPrincipal() {
-        this.initComposants();
+
+        initComposants();
     }
 
     private void initComposants() {
-        this.setLayout(new BorderLayout());
-        this.text = new JTextPane();
-        this.scroll = new JScrollPane(this.text, 20, 30);
-        this.scroll.setBorder(BorderFactory.createEmptyBorder());
-        this.add(this.scroll, "Center");
-        this.barreEtat = new BarreEtat(this);
-        this.add(this.barreEtat, "South");
+
+        setLayout(new BorderLayout());
+        textPane = new JTextPane();
+        scroll = new JScrollPane(textPane, VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scroll.setBorder(BorderFactory.createEmptyBorder());
+        add(scroll, "Center");
+        barreEtat = new BarreEtat(textPane);
+        add(barreEtat, "South");
 
        // SimpleAttributeSet.SetFontStyle(..., "monospaced");
     }
 
-    public JTextPane getTextArea() {
-        return this.text;
+    public JTextPane getTextPane() {
+
+        return textPane;
     }
 
-    public void setText(String text) {
-        this.text.setText(text);
-    }
-
-//    public void append(String s) {
-//        this.text.append(s);
-//    }
 
     public BarreEtat getBarreEtat() {
-        return this.barreEtat;
+
+        return barreEtat;
     }
 }
