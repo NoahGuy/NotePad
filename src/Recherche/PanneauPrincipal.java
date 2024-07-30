@@ -25,68 +25,51 @@ public class PanneauPrincipal extends JPanel{
 	
 	private PanneauMots panneauMots;
 	
-	private JPanel panneauDirection;
+	private PanneauDirection panneauDirection;
 	
 	private PanneauOptions panneauOptions;
 	
-	private JPanel panneauBtn;
+	private PanneauBtn panneauBtn;
 	
-	private JPanel panneauFermer;
+	private PanneauFermer panneauFermer;
 
-	private Fonctions fonctions;
+
 	
 	/**
 	 * Constructeur du panneau principal pour la fenêtre de recherche et 
 	 * de remplacement
 	 */
-	public PanneauPrincipal(Fonctions fonctions) {
+	public PanneauPrincipal(Fonctions fonctions, Cadre cadre) {
 
-		this.fonctions = fonctions;
-		
-		// met box layout pour que les panneaux imbriqués soient les uns par
-		// dessus les autres
+		initComposants(fonctions, cadre);
+
+		ajouterComposants();
+	}
+
+	public void initComposants(Fonctions fonctions, Cadre cadre) {
+
+
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
-		// construit le panneau où on insère notre mot à remplacer et son
-		// remplacement et lui passe le panneau principal en
-		// paramètre pour qu'on puisse interagir entre nos classes de
-		// panneaux
+
+
 		panneauMots = new PanneauMots(this);
-		
-		// construit le panneau où on insère nos choix de direction (JCheckBox)
-		// et lui passe le panneau principal en paramètre pour qu'on puisse
-		// interagir entre nos classes de panneaux
+
 		panneauDirection = new PanneauDirection(this);
-		
-		// construit le panneau où on insère nos options (JCheckBox)
-		// et lui passe le panneau principal en paramètre pour qu'on puisse
-		// interagir entre nos classes de panneaux
+
 		panneauOptions = new PanneauOptions(this);
-		
-		// construit le panneau où on insère nos boutons et lui passe le 
-		// panneau principal en paramètre pour qu'on puisse interagir
-		// entre nos classes de panneaux
-		panneauBtn = new PanneauBtn(this, this.fonctions);
-		
-		// construit le panneau où on insère notre boutons qui ferme la
-		// fenêtre et lui passe le panneau principal en paramètre pour 
-		// qu'on puisse interagir entre nos classes de panneaux
-		panneauFermer = new PanneauFermer(this);
-		
-		// ajoute tous les panneaux créés au panneau principal
+
+		panneauBtn = new PanneauBtn(fonctions, panneauMots, panneauOptions, panneauDirection);
+
+		panneauFermer = new PanneauFermer(this, cadre);
+	}
+
+	public void ajouterComposants() {
+
 		add(panneauMots);
 		add(panneauDirection);
 		add(panneauOptions);
 		add(panneauBtn);
 		add(panneauFermer);
-	}
-
-	public PanneauMots getPanneauMots() {
-		return panneauMots;
-	}
-
-	public PanneauOptions getPanneauOptions() {
-		return panneauOptions;
 	}
 }
 

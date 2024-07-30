@@ -24,9 +24,7 @@ public class PanneauBtn extends JPanel{
 	
 	//Le bouton qui permet de trouver le mot recherché
 	private JButton btnTrouver;
-	
-	//Le bouton qui permet de tout selectionner les mots recherchés
-	private JButton btnSelectionnerTout;
+
 	
 	//Le bouton qui permet de remplacer le mot recherché par son remplaçant et
 	//de sélectionner le prochain mot 
@@ -34,31 +32,28 @@ public class PanneauBtn extends JPanel{
 	
 	//Le bouton qui permet de remplacer le mot recherché par son remplaçant
 	private JButton btnRemplacer;
+
+	private JButton btnSelectionnerTout;
 	
 	//Le bouton qui permet de remplacer toutes les instances du mot recherché 
 	//par son remplaçant
 	private JButton btnRemplacerTout;
-	
-	//Le bouton qui permet d'accéder à la prochaine instance du mot recherché
-	private JButton btnSuivant;
-	
-	//Le panneau principal dans lequel ce panneau est ajouté
-	private Recherche.PanneauPrincipal panneauPrincipal;
+
+	private PanneauMots panneauMots;
+
+	private PanneauOptions panneauOptions;
+
+	private PanneauDirection panneauDirection;
 
 	private Fonctions fonctions;
 	
-	public PanneauBtn(PanneauPrincipal panneauPrincipal, Fonctions fonctions) {
+	public PanneauBtn(Fonctions fonctions, PanneauMots panneauMots,
+					  PanneauOptions panneauOptions, PanneauDirection panneauDirection) {
 
-		this.fonctions = fonctions;
-		
-		//assigne le panneauPrincipal recu en parametre
-		this.panneauPrincipal = panneauPrincipal;
-		
-		// met box layout pour que les composants imbriqués soient les uns par
-		// dessus les autres
+
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 				
-		initComposants();
+		initComposants(fonctions, panneauMots, panneauOptions, panneauDirection);
 		
 	}
 	
@@ -66,79 +61,53 @@ public class PanneauBtn extends JPanel{
 	 * Initialise tous les composants du panneau de boutons en appelant leurs
 	 * fonctions d'initialisation individuelles.
 	 */
-	private void initComposants() {
-	
-		creerBtn();
-		
-		initialiserComposants();
-		
-		ajouterComposants();
+	private void initComposants(Fonctions fonctions, PanneauMots panneauMots,
+								PanneauOptions panneauOptions, PanneauDirection panneauDirection) {
+
+		this.panneauMots = panneauMots;
+
+		this.panneauOptions = panneauOptions;
+
+		this.panneauDirection = panneauDirection;
+
+		this.fonctions = fonctions;
+
+		creerBtns();
+		ajouterBtns();
 	}
 	
 	
-	/**
-	 * Créé les six boutons
-	 */
-	private void creerBtn() {
+
+	private void creerBtns() {
 		
-		btnTrouver = nouveauBtn(btnTrouver);
-		btnSelectionnerTout = nouveauBtn(btnSelectionnerTout);
-		btnRemplacerTrouver = nouveauBtn(btnRemplacerTrouver);
-		btnRemplacer = nouveauBtn(btnRemplacer);
-		btnRemplacerTout = nouveauBtn(btnRemplacerTout);
-		btnSuivant = nouveauBtn(btnSuivant);
-	}
-	
-	/**
-	 * Construit un nouveau bouton et l'assigne à celui reçu en paramètre
-	 *
-	 * @param btn le bouton auquel le bouton créé sera assigné.
-	 * 
-	 * @return un JButton associé à celui reçu en paramètre.
-	 */
-	private JButton nouveauBtn(JButton btn) {
-		
-		btn = new JButton();
-		
-		return btn;
-	}
-	
-	/**
-	 * On ajoute un titre à chaque bouton.
-	 */
-	private void initialiserComposants() {
-		
-		btnTrouver.setText("Trouver");
-		
-		btnSelectionnerTout.setText("Sélectionner tout");
-		
-		btnRemplacerTrouver.setText("Remplacer/Trouver");
-		
-		btnRemplacer.setText("Remplacer");
-		
-		btnRemplacerTout.setText("Remplacer tout");
-		
-		btnSuivant.setText("Suivant");
+		btnTrouver = new JButton("Trouver");
+		btnSelectionnerTout = new JButton("Selectionner");
+		btnRemplacerTrouver = new JButton("Remplacer/Trouver");
+		btnRemplacer = new JButton("Remplacer");
+		btnRemplacerTout = new JButton("Remplacer tout");
 
 		btnTrouver.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				fonctions.rechercher(panneauPrincipal.getPanneauMots().getMotRecherche(),
-						panneauPrincipal.getPanneauOptions().getCaseSensibleCasse());
+
+				fonctions.rechercher(panneauMots.getMotRecherche(), panneauOptions.getCaseSensibleCasse(),
+						panneauDirection.getCaseArriere());
 			}
 		});
 	}
+
+
 	
 	/**
 	 * On ajoute les boutons.
 	 */
-	private void ajouterComposants() {
+	private void ajouterBtns() {
 		
 		add(btnTrouver);
 		add(btnSelectionnerTout);
 		add(btnRemplacerTrouver);
 		add(btnRemplacer);
 		add(btnRemplacerTout);
-		add(btnSuivant);
+
 	}
 }

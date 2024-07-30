@@ -2,10 +2,7 @@ package Recherche;
 
 import java.awt.Color;
 
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * Travail Pratique 2 INF111
@@ -26,13 +23,11 @@ public class PanneauDirection extends JPanel{
 	private JLabel titre;
 	
 	//L'option d'aller vers l'avant
-	private JCheckBox caseAvant;
+	private JRadioButton caseAvant;
 	
 	//L'option d'aller vers l'arrière
-	private JCheckBox caseArriere;
-	
-	//Le panneau principal dans lequel ce panneau est ajouté
-	private JPanel panneauPrincipal;
+	private JRadioButton caseArriere;
+
 	
 	/**
 	 * Construit le panneau de direction où les options "avant" et 
@@ -41,15 +36,14 @@ public class PanneauDirection extends JPanel{
 	 * @param panneauPrincipal le panneau principal où on ajoute ce panneau.
 	 */
 	public PanneauDirection(JPanel panneauPrincipal) {
-		
-		//assigne le panneauPrincipal recu en parametre
-		this.panneauPrincipal = panneauPrincipal;
-		
+
 		// met box layout pour que les composants imbriqués soient les uns par
 		// dessus les autres
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 				
 		initComposants();
+
+		ajouterComposants();
 		
 	}
 	
@@ -58,71 +52,20 @@ public class PanneauDirection extends JPanel{
 	 * fonctions d'initialisation individuelles.
 	 */
 	private void initComposants() {
-		
-		creerEtiq();
-		creerCase();
-		
-		initialiserComposants();
-		
-		ajouterComposants();
+
+		titre = new JLabel("Direction");
+
+		caseAvant = new JRadioButton("Avant");
+		caseAvant.setSelected(true);
+
+		caseArriere = new JRadioButton("Arrière");
+
+		ButtonGroup group = new ButtonGroup();
+		group.add(caseArriere);
+		group.add(caseAvant);
 	}
-	
-	/**
-	 * Créé l'étiquette qui comporte le titre du panneau
-	 */
-	private void creerEtiq() {
-		
-		titre = nouvelleEtiq(titre);
-	}
-	
-	/**
-	 * Construit une nouvelle étiquette et l'assigne à celle reçue en paramètre
-	 *
-	 * @param etiq l'étiquette à laquelle l'étiquette crée sera assignée.
-	 * 
-	 * @return un JLabel associé à celui reçu en paramètre.
-	 */
-	private JLabel nouvelleEtiq(JLabel etiq) {
-		
-		etiq = new JLabel();
-		
-		return etiq;
-	}
-	
-	/**
-	 * Créé les deux cases à cocher qui représenteront les options.
-	 */
-	private void creerCase() {
-		
-		caseAvant = nouvelleCase(caseAvant);
-		caseArriere = nouvelleCase(caseArriere);
-	}
-	
-	/**
-	 * Construit une nouvelle case et l'assigne à celle reçue en paramètre
-	 *
-	 * @param caseACocher la case à laquelle la case crée sera assignée.
-	 * 
-	 * @return un JCheckBox associé à celui reçu en paramètre.
-	 */
-	private JCheckBox nouvelleCase(JCheckBox caseACocher) {
-		
-		caseACocher = new JCheckBox();
-		
-		return caseACocher;
-	}
-	
-	/**
-	 * On ajoute le titre du panneau et celui de chaque case à cocher.
-	 */
-	private void initialiserComposants() {
-		
-		titre.setText("Direction");
-		
-		caseAvant.setText("Avant");
-		
-		caseArriere.setText("Arrière");
-	}
+
+
 	
 	/**
 	 * On ajoute le titre du panneau et les cases à cocher.
@@ -132,6 +75,11 @@ public class PanneauDirection extends JPanel{
 		add(titre);
 		add(caseAvant);
 		add(caseArriere);
+	}
+
+	public JRadioButton getCaseArriere() {
+
+		return caseArriere;
 	}
 }
 

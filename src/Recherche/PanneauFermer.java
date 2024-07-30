@@ -29,11 +29,15 @@ public class PanneauFermer extends JPanel{
 	
 	//Le panneau principal dans lequel ce panneau est ajouté
 	private JPanel panneauPrincipal;
+
+	private Cadre cadre;
 	
-	public PanneauFermer(JPanel panneauPrincipal) {
+	public PanneauFermer(JPanel panneauPrincipal, Cadre cadre) {
 		
 		//assigne le panneauPrincipal recu en parametre
 		this.panneauPrincipal = panneauPrincipal;
+
+		this.cadre = cadre;
 				
 		initComposants();
 		
@@ -103,8 +107,8 @@ public class PanneauFermer extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				System.exit(0);
+
+				cadre.dispose();
 			}
 		});
 	}

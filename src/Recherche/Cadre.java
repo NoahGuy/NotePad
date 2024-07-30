@@ -4,6 +4,8 @@ import Notepad.Fonctions;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
 /**
@@ -42,14 +44,25 @@ public class Cadre extends JFrame implements Runnable {
 	 */
 	@Override
 	public void run() {
+
+		//chaque fois qu'on veut effectuer une nouvelle recherche, on met la position a 0 afin de commencer au curseur
+		fonctions.setDernierePositionTrouve(0);
 		
-		panneauPrincipal = new PanneauPrincipal(fonctions);
+		panneauPrincipal = new PanneauPrincipal(fonctions, this);
 		
 		setContentPane(panneauPrincipal);			
 			
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				
 		setVisible(true);
+
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+
+				fonctions.enleverSurlignage();
+			}
+		});
 		
 	}
 

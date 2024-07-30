@@ -12,11 +12,11 @@ public class CadreGUI extends JFrame {
 
         initComposants();
 
-        setTitle(this.fonctions.nomFichier);
+        setTitle(fonctions.nomFichier);
         setSize(800, 600);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setJMenuBar(this.monMenuBar);
-        add(this.panneauPrincipal, "Center");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setJMenuBar(monMenuBar);
+        add(panneauPrincipal, "Center");
         setFocusable(true);
         setVisible(true);
     }

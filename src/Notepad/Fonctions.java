@@ -30,6 +30,7 @@ public class Fonctions {
     private String texte;
     private String chaineARechercher;
     private int dernierePositionTrouve;
+    private JRadioButton directionArriere;
 
     public Fonctions(CadreGUI cadre, JTextPane textPane, BarreEtat barreEtat) {
 
@@ -41,12 +42,13 @@ public class Fonctions {
 
     public void nouveauFichier() {
         textPane.setText("");
-        this.cadre.setTitle("Nouvelle page");
-        this.nomFichier = null;
-        this.adresseFichier = null;
+        cadre.setTitle("Nouvelle page");
+        nomFichier = null;
+        adresseFichier = null;
     }
 
     public void ouvrirFichier() {
+
         FileDialog fileDialog = new FileDialog((Frame) null, "Select a File", FileDialog.LOAD);
         fileDialog.setVisible(true);
 
@@ -54,12 +56,19 @@ public class Fonctions {
         String directory = fileDialog.getDirectory();
 
         if (fileName != null && directory != null) {
+
             File file = new File(directory, fileName);
             try {
+
                 String content = new String(Files.readAllBytes(file.toPath()));
                 textPane.setText(content);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Error reading the file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
+
+            catch (IOException ex) {
+
+                JOptionPane.showMessageDialog(null, "Error reading the file: " + ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -67,15 +76,24 @@ public class Fonctions {
 
 
     public void save() {
-        if (this.nomFichier == null) {
-            this.saveAs();
-        } else {
+        if (nomFichier == null) {
+
+            saveAs();
+        }
+
+        else {
+
             try {
-                FileWriter fw = new FileWriter(this.adresseFichier + this.nomFichier);
+
+                FileWriter fw = new FileWriter(adresseFichier + nomFichier);
                 fw.write(textPane.getText());
-                this.cadre.setTitle(this.nomFichier);
+                cadre.setTitle(nomFichier);
                 fw.close();
-            } catch (Exception var2) {
+
+            }
+
+            catch (Exception var2) {
+
                 Exception e = var2;
                 System.out.println(e);
             }
@@ -87,17 +105,23 @@ public class Fonctions {
 
         FileDialog fd = new FileDialog(this.cadre, "Sauvegarder en tant que", SAVE);
         fd.setVisible(true);
+
         if (fd.getFile() != null) {
-            this.nomFichier = fd.getFile();
-            this.adresseFichier = fd.getDirectory();
-            this.cadre.setTitle(this.nomFichier);
+
+            nomFichier = fd.getFile();
+            adresseFichier = fd.getDirectory();
+            cadre.setTitle(this.nomFichier);
         }
 
         try {
-            FileWriter fw = new FileWriter(this.adresseFichier + this.nomFichier);
+
+            FileWriter fw = new FileWriter(adresseFichier + nomFichier);
             fw.write(textPane.getText());
             fw.close();
-        } catch (Exception var3) {
+        }
+
+        catch (Exception var3) {
+
             Exception e = var3;
             System.out.println(e);
         }
@@ -105,14 +129,18 @@ public class Fonctions {
     }
 
     public void quitter() {
+
         int option = JOptionPane.showConfirmDialog(cadre, "Voulez-vous quitter et sauvegarder ?", "Quitter", JOptionPane.YES_NO_CANCEL_OPTION);
         if (option == JOptionPane.YES_OPTION) {
+
             saveAs();
-            System.exit(0);
-        } else if (option == JOptionPane.NO_OPTION) {
             System.exit(0);
         }
 
+        else if (option == JOptionPane.NO_OPTION) {
+
+            System.exit(0);
+        }
     }
 
     public void zoomIn() {
@@ -163,8 +191,9 @@ public class Fonctions {
         barreEtat.setVisible(!barreEtat.isVisible());
     }
 
-    public void rechercher(String chaineARechercher, JCheckBox caseSensibleCasse) {
+    public void rechercher(String chaineARechercher, JCheckBox caseSensibleCasse, JRadioButton directionArriere) {
 
+        this.directionArriere = directionArriere;
         this.chaineARechercher = chaineARechercher;
         // on prend Le texte qu'on a ecris dans le JTextPane en String
         //JTextPane leText = cadre.getPanneauPrincipal().getTextPane();
@@ -191,14 +220,15 @@ public class Fonctions {
 
         // on obtient la position du curseur actuel
         int positionCurseur = textPane.getCaretPosition();
-        dernierePositionTrouve = positionCurseur;
+
+        if (dernierePositionTrouve == 0) {
+
+            dernierePositionTrouve = positionCurseur;
+        }
+        //dernierePositionTrouve = positionCurseur;
 
         // apres une nouvelle recherche, on remet le texte à son style par defaut
-        doc.setCharacterAttributes(0, doc.getLength(), defaut, true);
-
-
-
-
+        enleverSurlignage();
 
         // si le check box pour case sensitive n'est pas coché alors
         // on transforme le text et la chaine de caractère recherchee
@@ -220,25 +250,48 @@ public class Fonctions {
 
     private void surlignerEnVert() {
 
-        // cherche la position de l'occurence après le curseur
-        int index = texte.indexOf(chaineARechercher, dernierePositionTrouve);
-        doc.setCharacterAttributes(index, chaineARechercher.length(), vert, true);
+        if (!directionArriere.isSelected()) {
 
-        // si on retrouve plus l'occurence on cherche à partir du premier
-        // caractère
-        if (index < 0){
+            // cherche la position de l'occurence après le curseur
+            int index = texte.indexOf(chaineARechercher, dernierePositionTrouve);
 
-            dernierePositionTrouve = 0;
-            index = texte.indexOf(chaineARechercher, dernierePositionTrouve);
+            // si on retrouve plus l'occurence on cherche à partir du premier
+            // caractère
+            if (index < 0){
+
+                dernierePositionTrouve = 0;
+                index = texte.indexOf(chaineARechercher, dernierePositionTrouve);
+            }
+
+            // on cherche la prochaine occurence et on incrémente la position
+            // de l'index
+            if (index >= 0) {
+
+                doc.setCharacterAttributes(index, chaineARechercher.length(), vert, true);
+                dernierePositionTrouve = index + chaineARechercher.length();
+            }
         }
 
-        // sinon, on cherche la prochaine occurence et on incrémente la position
-        // du curseur (dernierePositionTrouve)
-        if (index >= 0) {
+        else {
 
-            doc.setCharacterAttributes(index, chaineARechercher.length(), vert, true);
-            dernierePositionTrouve = index + chaineARechercher.length();
+            // cherche la derniere occurence avant le curseur
+            int index = texte.lastIndexOf(chaineARechercher, dernierePositionTrouve);
+
+            // si aucune occurence est trouvee avant le curseur, on cherche la derniere occurence de tout le texte
+            if (index < 0){
+
+                dernierePositionTrouve = texte.length();
+                index = texte.lastIndexOf(chaineARechercher, dernierePositionTrouve);
+            }
+
+            // on cherche l'occurence precedente et on decremente la position de l'index
+            if (index >= 0) {
+
+                doc.setCharacterAttributes(index, chaineARechercher.length(), vert, true);
+                dernierePositionTrouve = index - chaineARechercher.length();
+            }
         }
+
     }
 
     private void surlignerEnJaune() {
@@ -260,5 +313,15 @@ public class Fonctions {
             index += chaineARechercher.length();
 
         }
+    }
+
+    public void setDernierePositionTrouve(int dernierePositionTrouve) {
+
+        this.dernierePositionTrouve = dernierePositionTrouve;
+    }
+
+    public void enleverSurlignage() {
+
+        doc.setCharacterAttributes(0, doc.getLength(), defaut, true);
     }
 }
