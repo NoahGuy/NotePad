@@ -89,6 +89,8 @@ public class PanneauBtn extends JPanel{
 
 				fonctions.rechercher(panneauMots.getMotRecherche(), panneauDirection.getSensibleCasse(),
 						panneauDirection.getCaseArriere());
+
+				panneauMots.ajouterSaisies();
 			}
 		});
 	}

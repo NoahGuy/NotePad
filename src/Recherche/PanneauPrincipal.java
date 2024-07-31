@@ -51,7 +51,7 @@ public class PanneauPrincipal extends JPanel{
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 
-		panneauMots = new PanneauMots(this);
+		panneauMots = new PanneauMots();
 
 		panneauDirection = new PanneauDirectionOptions(this);
 
