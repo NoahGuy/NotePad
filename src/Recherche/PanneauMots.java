@@ -117,15 +117,15 @@ public class PanneauMots extends JPanel{
 
 			String chaine = saisie.getSelectedItem().toString();
 
-			for (int i = 0; i < saisie.getItemCount()- 1; i++) {
+			if (!chaine.isEmpty()) {
+				DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) saisieTrouver.getModel();
+				// Remove the item if it already exists
+				if (model.getIndexOf(chaine) == -1) {
+					// Add the item to the top
+					model.insertElementAt(chaine, 0);
 
-				if (Objects.equals(chaine, saisie.getItemAt(i))) {
-
-					saisie.removeItemAt(i);
 				}
 			}
-
-			saisie.addItem(chaine);
 		}
 	}
 

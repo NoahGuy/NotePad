@@ -31,6 +31,7 @@ public class Fonctions {
     private String chaineARechercher;
     private int dernierePositionTrouve;
     private JRadioButton directionArriere;
+    private int positionCurseurCourante;
 
     public Fonctions(CadreGUI cadre, JTextPane textPane, BarreEtat barreEtat) {
 
@@ -220,6 +221,13 @@ public class Fonctions {
 
         // on obtient la position du curseur actuel
         int positionCurseur = textPane.getCaretPosition();
+
+        if (positionCurseur != positionCurseurCourante)
+        {
+            dernierePositionTrouve = positionCurseur;
+            positionCurseurCourante = positionCurseur;
+        }
+
 
         if (dernierePositionTrouve == 0) {
 
