@@ -18,15 +18,22 @@ import javax.swing.*;
  * @version 14/07/24
  */
 public class PanneauDirection extends JPanel{
-	
+
+	private JPanel direction;
+
+	private JPanel options;
 	//Le titre du panneau
-	private JLabel titre;
+	private JLabel titreDirection;
 	
 	//L'option d'aller vers l'avant
 	private JRadioButton caseAvant;
 	
 	//L'option d'aller vers l'arrière
 	private JRadioButton caseArriere;
+
+	private JLabel titreOption;
+
+	private JCheckBox sensibleCasse;
 
 	
 	/**
@@ -39,7 +46,7 @@ public class PanneauDirection extends JPanel{
 
 		// met box layout pour que les composants imbriqués soient les uns par
 		// dessus les autres
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 				
 		initComposants();
 
@@ -53,7 +60,14 @@ public class PanneauDirection extends JPanel{
 	 */
 	private void initComposants() {
 
-		titre = new JLabel("Direction");
+		direction = new JPanel();
+
+		options = new JPanel();
+
+		direction.setLayout(new BoxLayout(direction, BoxLayout.Y_AXIS));
+		options.setLayout(new BoxLayout(options, BoxLayout.Y_AXIS));
+
+		titreDirection = new JLabel("Direction");
 
 		caseAvant = new JRadioButton("Avant");
 		caseAvant.setSelected(true);
@@ -61,6 +75,11 @@ public class PanneauDirection extends JPanel{
 		caseArriere = new JRadioButton("Arrière");
 
 		ButtonGroup group = new ButtonGroup();
+
+		titreOption = new JLabel("Options");
+
+		sensibleCasse = new JCheckBox("Sensible à la casse");
+
 		group.add(caseArriere);
 		group.add(caseAvant);
 	}
@@ -72,9 +91,16 @@ public class PanneauDirection extends JPanel{
 	 */
 	private void ajouterComposants() {
 		
-		add(titre);
-		add(caseAvant);
-		add(caseArriere);
+		direction.add(titreDirection);
+		direction.add(caseAvant);
+		direction.add(caseArriere);
+
+		add(direction);
+
+		options.add(titreOption);
+		options.add(sensibleCasse);
+
+		add(options);
 	}
 
 	public JRadioButton getCaseArriere() {
@@ -82,6 +108,9 @@ public class PanneauDirection extends JPanel{
 		return caseArriere;
 	}
 
-	//test
+	public JCheckBox getSensibleCasse() {
+
+		return sensibleCasse;
+	}
 }
 

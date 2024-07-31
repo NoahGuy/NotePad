@@ -58,7 +58,7 @@ public class PanneauPrincipal extends JPanel{
 
 		panneauOptions = new PanneauOptions(this);
 
-		panneauBtn = new PanneauBtn(fonctions, panneauMots, panneauOptions, panneauDirection);
+		panneauBtn = new PanneauBtn(fonctions, panneauMots, panneauDirection);
 
 		panneauFermer = new PanneauFermer(this, cadre);
 	}
@@ -67,7 +67,7 @@ public class PanneauPrincipal extends JPanel{
 
 		add(panneauMots);
 		add(panneauDirection);
-		add(panneauOptions);
+		//add(panneauOptions);
 		add(panneauBtn);
 		add(panneauFermer);
 	}

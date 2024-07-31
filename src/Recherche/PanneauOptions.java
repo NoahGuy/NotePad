@@ -26,33 +26,19 @@ public class PanneauOptions extends JPanel{
 	
 	//L'option de rendre la recherche sensible à la casse
 	private JCheckBox caseSensibleCasse;
+
 	
-	//L'option d'effectuer une recherche généralisée
-	private JCheckBox caseRechercheGeneralisee;
-	
-	//L'option de rechercher des mots complets
-	private JCheckBox caseMotComplet;
-	
-	//L'option d'effectuer une recherche incrémentale
-	private JCheckBox caseIncremental;
-	
-	//L'option de rechercher des expressions régulières
-	private JCheckBox caseExpressionsRegulieres;
-	
-	//Le panneau principal dans lequel ce panneau est ajouté
-	private JPanel panneauPrincipal;
+
 	
 	public PanneauOptions(JPanel panneauPrincipal) {
-		
-		//assigne le panneauPrincipal recu en parametre
-		this.panneauPrincipal = panneauPrincipal;
+
 		
 		// met box layout pour que les composants imbriqués soient les uns par
 		// dessus les autres
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 				
 		initComposants();
-		
+		ajouterComposants();
 	}
 	
 	/**
@@ -61,79 +47,12 @@ public class PanneauOptions extends JPanel{
 	 */
 	private void initComposants() {
 		
-		creerEtiq();
-		creerCase();
-		
-		initialiserComposants();
-		
-		ajouterComposants();
+
+		titre = new JLabel("Options");
+		caseSensibleCasse = new JCheckBox("Sensible à la casse");
+
 	}
-	
-	/**
-	 * Créé l'étiquette qui comporte le titre du panneau
-	 */
-	private void creerEtiq() {
-		
-		titre = nouvelleEtiq(titre);
-	}
-	
-	/**
-	 * Construit une nouvelle étiquette et l'assigne à celle reçue en paramètre
-	 *
-	 * @param etiq l'étiquette à laquelle l'étiquette crée sera assignée.
-	 * 
-	 * @return un JLabel associé à celui reçu en paramètre.
-	 */
-	private JLabel nouvelleEtiq(JLabel etiq) {
-		
-		etiq = new JLabel();
-		
-		return etiq;
-	}
-	
-	/**
-	 * Créé les cinq cases à cocher qui représenteront les options.
-	 */
-	private void creerCase() {
-		
-		caseSensibleCasse = nouvelleCase(caseSensibleCasse);
-		caseRechercheGeneralisee = nouvelleCase(caseRechercheGeneralisee);
-		caseMotComplet = nouvelleCase(caseMotComplet);
-		caseIncremental = nouvelleCase(caseIncremental);
-		caseExpressionsRegulieres = nouvelleCase(caseExpressionsRegulieres);
-	}
-	
-	/**
-	 * Construit une nouvelle case et l'assigne à celle reçue en paramètre
-	 *
-	 * @param caseACocher la case à laquelle la case crée sera assignée.
-	 * 
-	 * @return un JCheckBox associé à celui reçu en paramètre.
-	 */
-	private JCheckBox nouvelleCase(JCheckBox caseACocher) {
-		
-		caseACocher = new JCheckBox();
-		
-		return caseACocher;
-	}
-	
-	/**
-	 * On ajoute le titre du panneau et celui de chaque case à cocher.
-	 */
-	private void initialiserComposants() {
-		
-		titre.setText("Options");
-		
-		caseSensibleCasse.setText("Sensible à la casse");
-		
-		caseRechercheGeneralisee.setText("Recherche généralisée");
-		
-		caseMotComplet.setText("Mot complet");
-		
-		caseIncremental.setText("Incrémental");
-		
-		caseExpressionsRegulieres.setText("Expressions régulières");
-	}
+
 	
 	/**
 	 * On ajoute le titre du panneau et les cases à cocher.
@@ -142,10 +61,7 @@ public class PanneauOptions extends JPanel{
 		
 		add(titre);
 		add(caseSensibleCasse);
-		add(caseRechercheGeneralisee);
-		add(caseMotComplet);
-		add(caseIncremental);
-		add(caseExpressionsRegulieres);
+
 	}
 
 	public JCheckBox getCaseSensibleCasse() {

@@ -33,7 +33,7 @@ public class Cadre extends JFrame implements Runnable {
 		
 		super(titre);
 		
-		this.setSize(600, 600);
+		this.setSize(400, 500);
 
 		this.fonctions = fonctions;
 	}

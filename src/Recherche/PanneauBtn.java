@@ -2,6 +2,7 @@ package Recherche;
 
 import Notepad.Fonctions;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -41,19 +42,22 @@ public class PanneauBtn extends JPanel{
 
 	private PanneauMots panneauMots;
 
-	private PanneauOptions panneauOptions;
 
 	private PanneauDirection panneauDirection;
 
 	private Fonctions fonctions;
 	
-	public PanneauBtn(Fonctions fonctions, PanneauMots panneauMots,
-					  PanneauOptions panneauOptions, PanneauDirection panneauDirection) {
+	public PanneauBtn(Fonctions fonctions, PanneauMots panneauMots, PanneauDirection panneauDirection) {
 
+		this.panneauMots = panneauMots;
 
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.panneauDirection = panneauDirection;
+
+		this.fonctions = fonctions;
+
+		setLayout(new FlowLayout());
 				
-		initComposants(fonctions, panneauMots, panneauOptions, panneauDirection);
+		initComposants();
 		
 	}
 	
@@ -61,16 +65,9 @@ public class PanneauBtn extends JPanel{
 	 * Initialise tous les composants du panneau de boutons en appelant leurs
 	 * fonctions d'initialisation individuelles.
 	 */
-	private void initComposants(Fonctions fonctions, PanneauMots panneauMots,
-								PanneauOptions panneauOptions, PanneauDirection panneauDirection) {
+	private void initComposants() {
 
-		this.panneauMots = panneauMots;
 
-		this.panneauOptions = panneauOptions;
-
-		this.panneauDirection = panneauDirection;
-
-		this.fonctions = fonctions;
 
 		creerBtns();
 		ajouterBtns();
@@ -90,7 +87,7 @@ public class PanneauBtn extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				fonctions.rechercher(panneauMots.getMotRecherche(), panneauOptions.getCaseSensibleCasse(),
+				fonctions.rechercher(panneauMots.getMotRecherche(), panneauDirection.getSensibleCasse(),
 						panneauDirection.getCaseArriere());
 			}
 		});
