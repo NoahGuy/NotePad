@@ -1,7 +1,5 @@
 package Recherche;
 
-import java.awt.Color;
-
 import javax.swing.*;
 
 /**
@@ -17,7 +15,7 @@ import javax.swing.*;
  *
  * @version 14/07/24
  */
-public class PanneauDirection extends JPanel{
+public class PanneauDirectionOptions extends JPanel{
 
 	private JPanel direction;
 
@@ -42,7 +40,7 @@ public class PanneauDirection extends JPanel{
 	 *
 	 * @param panneauPrincipal le panneau principal où on ajoute ce panneau.
 	 */
-	public PanneauDirection(JPanel panneauPrincipal) {
+	public PanneauDirectionOptions(JPanel panneauPrincipal) {
 
 		// met box layout pour que les composants imbriqués soient les uns par
 		// dessus les autres

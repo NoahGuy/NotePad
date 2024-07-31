@@ -43,11 +43,11 @@ public class PanneauBtn extends JPanel{
 	private PanneauMots panneauMots;
 
 
-	private PanneauDirection panneauDirection;
+	private PanneauDirectionOptions panneauDirection;
 
 	private Fonctions fonctions;
 	
-	public PanneauBtn(Fonctions fonctions, PanneauMots panneauMots, PanneauDirection panneauDirection) {
+	public PanneauBtn(Fonctions fonctions, PanneauMots panneauMots, PanneauDirectionOptions panneauDirection) {
 
 		this.panneauMots = panneauMots;
 

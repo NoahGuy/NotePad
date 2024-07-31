@@ -25,9 +25,8 @@ public class PanneauPrincipal extends JPanel{
 	
 	private PanneauMots panneauMots;
 	
-	private PanneauDirection panneauDirection;
-	
-	private PanneauOptions panneauOptions;
+	private PanneauDirectionOptions panneauDirection;
+
 	
 	private PanneauBtn panneauBtn;
 	
@@ -54,9 +53,8 @@ public class PanneauPrincipal extends JPanel{
 
 		panneauMots = new PanneauMots(this);
 
-		panneauDirection = new PanneauDirection(this);
+		panneauDirection = new PanneauDirectionOptions(this);
 
-		panneauOptions = new PanneauOptions(this);
 
 		panneauBtn = new PanneauBtn(fonctions, panneauMots, panneauDirection);
 
@@ -67,7 +65,6 @@ public class PanneauPrincipal extends JPanel{
 
 		add(panneauMots);
 		add(panneauDirection);
-		//add(panneauOptions);
 		add(panneauBtn);
 		add(panneauFermer);
 	}
