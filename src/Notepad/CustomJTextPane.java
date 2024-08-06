@@ -33,30 +33,23 @@ public class CustomJTextPane extends JTextPane {
 
         fonctions = new Fonctions(cadre, this, barreEtat);
         initComposants(fonctions);
+
+
+
+//        JScrollPane scrollPane = new JScrollPane(this);
+//        panneauPrincipal.add(scrollPane, BorderLayout.CENTER);
+//
+//        // Enable mouse wheel scrolling in the JScrollPane
+//        scrollPane.setWheelScrollingEnabled(true);
+
         bindZoom();
-        setMonospacedFont();
     }
 
     /**
      * initialize la police du JTextPane afin que chaque lettre prenne le même nombre de pixels
      * afin d'avoir ligne et colonne dans la barre état.
      */
-    private void setMonospacedFont() {
 
-        doc = getStyledDocument();
-
-        // Create a Style for the monospaced font
-        Style style = addStyle("MonospacedStyle", null);
-        Font font = new Font("Consolas", Font.PLAIN, 12);
-        StyleConstants.setFontFamily(style, font.getFamily());
-        StyleConstants.setFontSize(style, font.getSize());
-
-        // Apply the style to the entire document
-        doc.setCharacterAttributes(0, doc.getLength(), style, false);
-
-        // Optional: set the default font for new text input
-        setCharacterAttributes(style, true);
-    }
 
     private void initComposants(Fonctions fonctions) {
 
@@ -88,6 +81,34 @@ public class CustomJTextPane extends JTextPane {
                     else {
 
                         fonctions.zoomOut();
+                    }
+                }
+                else {
+
+                    // scroll normalement quand ctrl n'est pas appuye
+                    JScrollPane scrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class,
+                                            CustomJTextPane.this);
+
+                    if (scrollPane != null) {
+
+                        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+                        JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
+
+                        int unitsToScroll = e.getUnitsToScroll();
+                        int direction = e.getWheelRotation();
+
+                        //scroll horizontalement si shift est appuye
+                        if (e.isShiftDown()) {
+
+                            horizontalScrollBar.setValue(horizontalScrollBar.getValue() +
+                                    (unitsToScroll * horizontalScrollBar.getUnitIncrement(direction)));
+                        }
+                        //scroll verticalement sinon
+                        else {
+
+                            verticalScrollBar.setValue(verticalScrollBar.getValue() +
+                                    (unitsToScroll * verticalScrollBar.getUnitIncrement(direction)));
+                        }
                     }
                 }
 
