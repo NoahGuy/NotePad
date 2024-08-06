@@ -60,6 +60,8 @@ public class Fonctions {
 
         if (fileName != null && directory != null) {
 
+            cadre.setTitle(fileName);
+            nomFichier = fileName;
             File file = new File(directory, fileName);
             try {
 
