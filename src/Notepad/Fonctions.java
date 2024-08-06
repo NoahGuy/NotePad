@@ -6,6 +6,7 @@ import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -29,6 +30,7 @@ public class Fonctions {
     private StyledDocument doc;
     private String texte;
     private String chaineARechercher;
+    private String chaineARemplacer;
     private int dernierePositionTrouve;
     private JRadioButton directionArriere;
     private int positionCurseurCourante;
@@ -64,9 +66,7 @@ public class Fonctions {
                 String content = new String(Files.readAllBytes(file.toPath()));
                 textPane.setText(content);
 
-            }
-
-            catch (IOException ex) {
+            } catch (IOException ex) {
 
                 JOptionPane.showMessageDialog(null, "Error reading the file: " + ex.getMessage(),
                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -75,14 +75,11 @@ public class Fonctions {
     }
 
 
-
     public void save() {
         if (nomFichier == null) {
 
             saveAs();
-        }
-
-        else {
+        } else {
 
             try {
 
@@ -91,9 +88,7 @@ public class Fonctions {
                 cadre.setTitle(nomFichier);
                 fw.close();
 
-            }
-
-            catch (Exception var2) {
+            } catch (Exception var2) {
 
                 Exception e = var2;
                 System.out.println(e);
@@ -119,9 +114,7 @@ public class Fonctions {
             FileWriter fw = new FileWriter(adresseFichier + nomFichier);
             fw.write(textPane.getText());
             fw.close();
-        }
-
-        catch (Exception var3) {
+        } catch (Exception var3) {
 
             Exception e = var3;
             System.out.println(e);
@@ -131,14 +124,16 @@ public class Fonctions {
 
     public void quitter() {
 
-        int option = JOptionPane.showConfirmDialog(cadre, "Voulez-vous quitter et sauvegarder ?", "Quitter", JOptionPane.YES_NO_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(cadre,
+                "Voulez-vous quitter et sauvegarder ?",
+                "Quitter",
+                JOptionPane.YES_NO_CANCEL_OPTION);
+
         if (option == JOptionPane.YES_OPTION) {
 
             saveAs();
             System.exit(0);
-        }
-
-        else if (option == JOptionPane.NO_OPTION) {
+        } else if (option == JOptionPane.NO_OPTION) {
 
             System.exit(0);
         }
@@ -150,7 +145,7 @@ public class Fonctions {
 
         if (currentFont.getSize() < MAX_FONT_SIZE) {
 
-            float newSize = (float)currentFont.getSize() + 2.0F;
+            float newSize = (float) currentFont.getSize() + 2.0F;
 
             int pourcentageAugmentation = calculerPourcentageZoom(newSize);
 
@@ -166,7 +161,7 @@ public class Fonctions {
 
         if (currentFont.getSize() > MIN_FONT_SIZE) {
 
-            float newSize = (float)currentFont.getSize() - 2.0F;
+            float newSize = (float) currentFont.getSize() - 2.0F;
 
             int pourcentageDiminution = calculerPourcentageZoom(newSize);
 
@@ -178,7 +173,7 @@ public class Fonctions {
 
     private int calculerPourcentageZoom(float newSize) {
 
-        return (int)(100.0F * (newSize / 12.0F));
+        return (int) (100.0F * (newSize / 12.0F));
     }
 
     public void ouvrirPanneauRecherche(Fonctions fonctions) {
@@ -222,8 +217,7 @@ public class Fonctions {
         // on obtient la position du curseur actuel
         int positionCurseur = textPane.getCaretPosition();
 
-        if (positionCurseur != positionCurseurCourante)
-        {
+        if (positionCurseur != positionCurseurCourante) {
             dernierePositionTrouve = positionCurseur;
             positionCurseurCourante = positionCurseur;
         }
@@ -235,7 +229,8 @@ public class Fonctions {
         }
         //dernierePositionTrouve = positionCurseur;
 
-        // apres une nouvelle recherche, on remet le texte à son style par defaut
+        // apres une nouvelle recherche, on remet le texte à son style par
+        // defaut
         enleverSurlignage();
 
         // si le check box pour case sensitive n'est pas coché alors
@@ -265,7 +260,7 @@ public class Fonctions {
 
             // si on retrouve plus l'occurence on cherche à partir du premier
             // caractère
-            if (index < 0){
+            if (index < 0) {
 
                 dernierePositionTrouve = 0;
                 index = texte.indexOf(chaineARechercher, dernierePositionTrouve);
@@ -278,15 +273,13 @@ public class Fonctions {
                 doc.setCharacterAttributes(index, chaineARechercher.length(), vert, true);
                 dernierePositionTrouve = index + chaineARechercher.length();
             }
-        }
-
-        else {
+        } else {
 
             // cherche la derniere occurence avant le curseur
             int index = texte.lastIndexOf(chaineARechercher, dernierePositionTrouve);
 
             // si aucune occurence est trouvee avant le curseur, on cherche la derniere occurence de tout le texte
-            if (index < 0){
+            if (index < 0) {
 
                 dernierePositionTrouve = texte.length();
                 index = texte.lastIndexOf(chaineARechercher, dernierePositionTrouve);
@@ -306,7 +299,7 @@ public class Fonctions {
 
         // on transforme le texte ecris en String et remplace les \n par du
         // vide (car doc.setCharacterAttributes ne les detecte pas)
-        texte = texte.replace("\n","");
+        texte = texte.replace("\n", "");
 
         int index = 0;
 
@@ -332,4 +325,154 @@ public class Fonctions {
 
         doc.setCharacterAttributes(0, doc.getLength(), defaut, true);
     }
+
+    /**
+     * Remplace tout les occurence par la chaine de caractère à remplacer
+     *
+     * @param chaineARechercher
+     * @param chaineARemplacer
+     * @param caseSensibleCasse
+     * @param directionArriere
+     */
+    public void remplacer(String chaineARechercher,
+                                    String chaineARemplacer,
+                                    JCheckBox caseSensibleCasse,
+                                    JRadioButton directionArriere) {
+
+        texte = textPane.getText();
+
+        this.chaineARechercher = chaineARechercher;
+        this.chaineARemplacer = chaineARemplacer;
+        this.directionArriere = directionArriere;
+
+        // pour les case sensible
+        if (!caseSensibleCasse.isSelected()) {
+
+            chaineARechercher = chaineARechercher.toLowerCase();
+            texte = texte.toLowerCase();
+        }
+
+
+        try {
+
+            remplacerTout();
+        } catch (BadLocationException ex) {
+
+            throw new RuntimeException(ex);
+        }
+
+
+    }
+
+
+    /**
+     * fonction qui permet la recherche de tout les occurence et remplace par
+     * une autre chaine de caractere
+     *
+     * @throws BadLocationException
+     */
+    private void remplacerTout() throws BadLocationException {
+
+
+        // on transforme le texte ecris en String et remplace les \n par du
+        // vide (car doc.setCharacterAttributes ne les detecte pas)
+        texte = texte.replace("\n","");
+
+        // l'index représente la position où ce trouve
+        // "chaineCaratereRecherchee"
+        int index = texte.indexOf(chaineARechercher);
+
+
+
+
+        // on cherche les occurences du mot rechercher
+        // (chaineCaratereRecherchee)
+        while (index >= 0) {
+
+            // on eneleve les occurence du mot rechercher
+            // (chaineCaratereRecherchee) à partir de leur index
+            doc.remove(index,chaineARechercher.length());
+
+            // on insert la chaine de caractere "chaineCaratereRemplacement"
+            // à partir de l'index
+            doc.insertString(index,chaineARemplacer, null);
+
+
+            // on va à la position de l'occurence suivante
+            index = texte.indexOf(chaineARechercher, index +
+                                                    chaineARemplacer.length());
+
+
+        }
+
+    }
+
+    /**
+     *
+     * permet de remplacer une seul occurence et surligne en vert l'occurence
+     * suivante
+     *
+     * @param chaineARechercher
+     * @param chaineARemplacer
+     * @param caseSensibleCasse
+     * @param directionArriere
+     */
+    public void remplacerOccurrenceSurligneeEnVert(String chaineARechercher,
+                                                   String chaineARemplacer,
+                                                   JCheckBox caseSensibleCasse,
+                                                  JRadioButton directionArriere)
+    {
+        this.chaineARechercher = chaineARechercher;
+        this.chaineARemplacer = chaineARemplacer;
+        this.directionArriere = directionArriere;
+        this.texte = textPane.getText();
+
+
+        // verifie l'option de la case sensible
+        if (!caseSensibleCasse.isSelected()) {
+            chaineARechercher = chaineARechercher.toLowerCase();
+            texte = texte.toLowerCase();
+        }
+
+        try {
+
+            texte = texte.replace("\n", "");
+
+            // on prend l'index de l'occurence
+            int index = chercheProchaineOccurence();
+
+
+            if (index >= 0) {
+
+                // on remplace l'occurence par la chaine de caractere a
+                // remplacer
+                doc.remove(index, chaineARechercher.length());
+                doc.insertString(index, chaineARemplacer, null);
+
+                // on enlève le surlignage vert du mot qu'on remplace
+                doc.setCharacterAttributes(dernierePositionTrouve,
+                        chaineARemplacer.length(),defaut,true);
+            }
+
+            // surligne en vert la prochaine occurence
+            surlignerEnVert();
+
+        } catch (BadLocationException ex) {
+
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * Cherche l'index de l'occurence selon la selection de la direction
+     *
+     * @return l'index de l'occurence
+     */
+    private int chercheProchaineOccurence() {
+
+        return directionArriere.isSelected() ?
+                texte.indexOf(chaineARechercher, dernierePositionTrouve)
+                : texte.lastIndexOf(chaineARechercher, dernierePositionTrouve);
+    }
+
 }

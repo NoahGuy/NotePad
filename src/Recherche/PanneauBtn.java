@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 
 /**
  * Travail Pratique 2 INF111
@@ -47,7 +48,8 @@ public class PanneauBtn extends JPanel{
 
 	private Fonctions fonctions;
 	
-	public PanneauBtn(Fonctions fonctions, PanneauMots panneauMots, PanneauDirectionOptions panneauDirection) {
+	public PanneauBtn(Fonctions fonctions, PanneauMots panneauMots,
+					  PanneauDirectionOptions panneauDirection) {
 
 		this.panneauMots = panneauMots;
 
@@ -87,10 +89,38 @@ public class PanneauBtn extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				fonctions.rechercher(panneauMots.getMotRecherche(), panneauDirection.getSensibleCasse(),
+				fonctions.rechercher(
+						panneauMots.getMotRecherche(),
+						panneauDirection.getSensibleCasse(),
 						panneauDirection.getCaseArriere());
 
 				panneauMots.ajouterSaisies();
+			}
+		});
+
+		btnRemplacerTout.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				fonctions.remplacer(
+						panneauMots.getMotRecherche(),
+						panneauMots.getMotRemplacer(),
+						panneauDirection.getSensibleCasse(),
+						panneauDirection.getCaseArriere());
+
+            }
+		});
+
+		btnRemplacer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				fonctions.remplacerOccurrenceSurligneeEnVert(
+						panneauMots.getMotRecherche(),
+						panneauMots.getMotRemplacer(),
+						panneauDirection.getSensibleCasse(),
+						panneauDirection.getCaseArriere());
 			}
 		});
 	}

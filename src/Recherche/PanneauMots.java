@@ -111,6 +111,11 @@ public class PanneauMots extends JPanel{
 		return (String) saisieTrouver.getSelectedItem();
 	}
 
+	public String getMotRemplacer() {
+
+		return (String) saisieRemplacer.getSelectedItem();
+	}
+
 	public void ajouterSaisie(JComboBox<String> saisie) {
 
 		if (saisie.getSelectedItem() != null) {
@@ -118,9 +123,13 @@ public class PanneauMots extends JPanel{
 			String chaine = saisie.getSelectedItem().toString();
 
 			if (!chaine.isEmpty()) {
-				DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) saisieTrouver.getModel();
+
+				DefaultComboBoxModel<String> model =
+						(DefaultComboBoxModel<String>) saisieTrouver.getModel();
+
 				// Remove the item if it already exists
 				if (model.getIndexOf(chaine) == -1) {
+
 					// Add the item to the top
 					model.insertElementAt(chaine, 0);
 
