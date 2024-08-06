@@ -1,12 +1,17 @@
 package Notepad;
 
 import javax.swing.*;
+import java.awt.*;
+
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
+import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 
 public class CadreGUI extends JFrame {
     private PanneauPrincipal panneauPrincipal;
     private Fonctions fonctions;
     private MonJMenuBar monMenuBar;
-    private Shortcuts keyListener;
+    private JTextPaneCtrlFYZ textPane;
+    private JScrollPane scroll;
 
     public CadreGUI() {
 
@@ -23,12 +28,21 @@ public class CadreGUI extends JFrame {
 
     public void initComposants() {
 
-        panneauPrincipal = new PanneauPrincipal();
 
+        panneauPrincipal = new PanneauPrincipal(this);
 
-        fonctions = new Fonctions(this, panneauPrincipal.getTextPane(), panneauPrincipal.getBarreEtat());
+        textPane = new JTextPaneCtrlFYZ(this, panneauPrincipal);
+
+        fonctions = textPane.fonctions;
+
         monMenuBar = new MonJMenuBar(fonctions);
-        keyListener = new Shortcuts(fonctions, panneauPrincipal.getTextPane());
+
+        panneauPrincipal.add(textPane);
+
+        scroll = new JScrollPane(textPane, VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scroll.setBorder(BorderFactory.createEmptyBorder());
+        panneauPrincipal.add(scroll, "Center");
+
     }
 
 }

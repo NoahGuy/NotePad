@@ -11,9 +11,9 @@ public class BarreEtat extends JPanel {
 
     private JLabel zoom;
     private JLabel nbCaracteres;
-    private JTextPane textPane;
+    private CustomJTextPane textPane;
 
-    public BarreEtat(JTextPane textPane) {
+    public BarreEtat(CustomJTextPane textPane) {
 
         setLayout(new BorderLayout());
 
