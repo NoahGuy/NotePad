@@ -11,6 +11,23 @@ import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 import static java.awt.event.KeyEvent.*;
 
 /**
+ * Travail Pratique 2 INF111
+ *
+ * <p>L'objectif de ce travail pratique est de créer un éditeur de texte simple avec les 
+ *    options ‘défaire’ (undo), via Ctrl+z, et ‘refaire’ (redo), via ‘Ctrl+y’. L'éditeur
+ *    a aussi une fonctionnalité de recherche et de remplacement de mots qu'on accède via
+ *    la commande ‘Ctrl+f’.</p>
+ *
+ * <p>Classe	: </p>
+ *
+ * <p>Desc		: </p>
+ *
+ * @author Josue Jesus Aliaga Guillen, Noah Boivin, Simon Dion, Souhayl Farsane
+ *
+ * @version 07/08/24
+ */
+
+/**
  * herite de CustomJTextPane et ajoute des methodes pour bind les fonctions de recherche à ctrl F, ainsi que
  * undo et redo à ctrl z et y
  */
