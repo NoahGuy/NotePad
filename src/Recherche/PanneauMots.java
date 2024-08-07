@@ -57,8 +57,6 @@ public class PanneauMots extends JPanel{
 	 */
 	public PanneauMots() {
 		
-		//assigne le panneauPrincipal recu en parametre
-		
 		// met box layout pour que les panneaux imbriqués soient les uns par
 		// dessus les autres
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -76,14 +74,20 @@ public class PanneauMots extends JPanel{
 	private void initComposants() {
 
 		trouver = new JLabel("Trouver");
+		
 		remplacer = new JLabel("Remplacer");
+	
 		saisieTrouver = new JComboBox<>();
+		
 		saisieTrouver.setEditable(true);
+		
 		saisieTrouver.setMaximumSize(new Dimension(300, 50));
+		
 		saisieRemplacer = new JComboBox<>();
+		
 		saisieRemplacer.setEditable(true);
+		
 		saisieRemplacer.setMaximumSize(new Dimension(300, 50));
-
 	}
 	
 
@@ -105,32 +109,55 @@ public class PanneauMots extends JPanel{
 		add(saisieRemplacer);
 	}
 
-
+	/**
+	 * Renvoi le mot recherché par l'utilisateur.
+	 *
+	 * @param Aucun
+	 * 
+	 * @return un String associé au mot recherché.
+	 */
 	public String getMotRecherche() {
 
 		return (String) saisieTrouver.getSelectedItem();
 	}
 
+	/**
+	 * Renvoi le mot de remplacement décidé par l'utilisateur.
+	 *
+	 * @param Aucun
+	 * 
+	 * @return un String associé au mot qui remplace le mot recherché.
+	 */
 	public String getMotRemplacer() {
 
 		return (String) saisieRemplacer.getSelectedItem();
 	}
 
+	/**
+	 * Ajout d'un mot à l'historique de la barre de recherche de mot recherché ou qui remplace.
+	 *
+	 * @param saisie Le mot saisi par l'utilisateur.
+	 * 
+	 * @return Aucun
+	 */
 	public void ajouterSaisie(JComboBox<String> saisie) {
 
+		//Si le mot sélectionné n'est pas nul, on le récupère à l'aide 
+		// des méthodes getSelectedItem() et toString().
 		if (saisie.getSelectedItem() != null) {
 
 			String chaine = saisie.getSelectedItem().toString();
 
 			if (!chaine.isEmpty()) {
 
+				//On récupère l'historique.
 				DefaultComboBoxModel<String> model =
 						(DefaultComboBoxModel<String>) saisieTrouver.getModel();
 
-				// Remove the item if it already exists
+			
 				if (model.getIndexOf(chaine) == -1) {
 
-					// Add the item to the top
+					// On ajoute le nouvel élément au sommet de l'historique.
 					model.insertElementAt(chaine, 0);
 
 				}
@@ -138,6 +165,9 @@ public class PanneauMots extends JPanel{
 		}
 	}
 
+	/**
+	 * On intègre la précédente procédure au deux barres de recherche (Trouver et Remplacer)
+	 */
 	public void ajouterSaisies() {
 
 		ajouterSaisie(saisieTrouver);
