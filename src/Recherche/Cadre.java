@@ -23,7 +23,7 @@ import java.awt.event.WindowEvent;
  *
  * @author Josue Jesus Aliaga Guillen, Noah Boivin, Simon Dion, Souhayl Farsane
  *
- * @version 14/07/24
+ * @version 07/08/24
  */
 
 public class Cadre extends JFrame implements Runnable {
