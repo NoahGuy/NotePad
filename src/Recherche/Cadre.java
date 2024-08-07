@@ -11,7 +11,10 @@ import java.awt.event.WindowEvent;
 /**
  * Travail Pratique 2 INF111
  *
- * <p>L'objectif de ce travail pratique est de </p>
+ * <p>L'objectif de ce travail pratique est de créer un éditeur de texte simple avec les 
+ *    options ‘défaire’ (undo), via Ctrl+z, et ‘refaire’ (redo), via ‘Ctrl+y’. L'éditeur
+ *    a aussi une fonctionnalité de recherche et de remplacement de mots qu'on accède via
+ *    la commande ‘Ctrl+f’.</p>
  *
  * <p>Classe	: GUI.Cadre</p>
  *
@@ -45,7 +48,8 @@ public class Cadre extends JFrame implements Runnable {
 	@Override
 	public void run() {
 
-		//chaque fois qu'on veut effectuer une nouvelle recherche, on met la position a 0 afin de commencer au curseur
+		//chaque fois qu'on veut effectuer une nouvelle recherche, on met la
+		//position a 0 afin de commencer au curseur
 		fonctions.setDernierePositionTrouve(0);
 		
 		panneauPrincipal = new PanneauPrincipal(fonctions, this);
