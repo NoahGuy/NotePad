@@ -313,7 +313,7 @@ public class Fonctions {
             doc.setCharacterAttributes(index, chaineARechercher.length(), jaune, true);
 
             // on passe à prochaine occurence
-            index += chaineARechercher.length();
+            index += chaineARechercher.length()-1;
 
         }
     }
@@ -449,15 +449,9 @@ public class Fonctions {
                 // on remplace l'occurence par la chaine de caractere a
                 // remplacer
                 doc.remove(index, chaineARechercher.length());
-                doc.insertString(index, chaineARemplacer, null);
+                doc.insertString(index, chaineARemplacer, defaut);
 
-                // on enlève le surlignage vert du mot qu'on remplace
-                doc.setCharacterAttributes(dernierePositionTrouve,
-                        chaineARemplacer.length(),defaut,true);
             }
-
-            // surligne en vert la prochaine occurence
-            surlignerEnVert();
 
         } catch (BadLocationException ex) {
 

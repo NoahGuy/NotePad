@@ -85,6 +85,9 @@ public class PanneauBtn extends JPanel{
 		btnRemplacer = new JButton("Remplacer");
 		btnRemplacerTout = new JButton("Remplacer tout");
 
+		// Désactiver le bouton Remplacer initialement
+		btnRemplacer.setEnabled(false);
+
 		btnTrouver.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -95,6 +98,8 @@ public class PanneauBtn extends JPanel{
 						panneauDirection.getCaseArriere());
 
 				panneauMots.ajouterSaisies();
+
+				btnRemplacer.setEnabled(true);
 			}
 		});
 
@@ -121,6 +126,8 @@ public class PanneauBtn extends JPanel{
 						panneauMots.getMotRemplacer(),
 						panneauDirection.getSensibleCasse(),
 						panneauDirection.getCaseArriere());
+
+				btnRemplacer.setEnabled(false);
 			}
 		});
 	}
