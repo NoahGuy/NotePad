@@ -10,6 +10,23 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Element;
 
+/**
+ * Travail Pratique 2 INF111
+ *
+ * <p>L'objectif de ce travail pratique est de créer un éditeur de texte simple avec les 
+ *    options ‘défaire’ (undo), via Ctrl+z, et ‘refaire’ (redo), via ‘Ctrl+y’. L'éditeur
+ *    a aussi une fonctionnalité de recherche et de remplacement de mots qu'on accède via
+ *    la commande ‘Ctrl+f’.</p>
+ *
+ * <p>Classe	: </p>
+ *
+ * <p>Desc		: </p>
+ *
+ * @author Josue Jesus Aliaga Guillen, Noah Boivin, Simon Dion, Souhayl Farsane
+ *
+ * @version 07/08/24
+ */
+
 public class BarreEtat extends JPanel {
 
     private JLabel zoom;
