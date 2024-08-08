@@ -312,7 +312,7 @@ public class Fonctions {
 
             // si on retrouve plus l'occurence on cherche à partir du premier
             // caractère
-            if (index < 0) {
+            if (!occurenceExiste(index)) {
 
                 dernierePositionTrouve = 0;
                 index = texte.indexOf(chaineARechercher, dernierePositionTrouve);
@@ -320,7 +320,7 @@ public class Fonctions {
 
             // on cherche la prochaine occurence et on incrémente la position
             // de l'index
-            if (index >= 0) {
+            if (occurenceExiste(index)) {
 
                 doc.setCharacterAttributes(index, chaineARechercher.length(), vert, true);
                 dernierePositionTrouve = index + chaineARechercher.length();
@@ -330,17 +330,22 @@ public class Fonctions {
             // cherche la derniere occurence avant le curseur
             int index = texte.lastIndexOf(chaineARechercher, dernierePositionTrouve);
 
-            // si aucune occurence est trouvee avant le curseur, on cherche la derniere occurence de tout le texte
-            if (index < 0) {
+            // si aucune occurence est trouvee avant le curseur, on cherche la
+            // derniere occurence de tout le texte
+            if (!occurenceExiste(index)) {
 
                 dernierePositionTrouve = texte.length();
-                index = texte.lastIndexOf(chaineARechercher, dernierePositionTrouve);
+                
+                index = texte.lastIndexOf(chaineARechercher,
+                                            dernierePositionTrouve);
             }
 
-            // on cherche l'occurence precedente et on decremente la position de l'index
-            if (index >= 0) {
+            // on cherche l'occurence precedente et on decremente la position de
+            // l'index
+            if (occurenceExiste(index)) {
 
-                doc.setCharacterAttributes(index, chaineARechercher.length(), vert, true);
+                doc.setCharacterAttributes(index, chaineARechercher.length(),
+                                           vert, true);
                 dernierePositionTrouve = index - chaineARechercher.length();
             }
         }
@@ -357,14 +362,16 @@ public class Fonctions {
         // vide (car doc.setCharacterAttributes ne les detecte pas)
         texte = texte.replace("\n", "");
 
+        // on initialise l'index à 0
         int index = 0;
 
         // La boucle continue tant qu'une occurrence du mot recherché est
         // trouvee
-        while ((index = texte.indexOf(chaineARechercher, index)) >= 0) {
+        while (occurenceExiste(index = texte.indexOf(chaineARechercher, index))){
 
             // on surligne le caractère recherchee
-            doc.setCharacterAttributes(index, chaineARechercher.length(), jaune, true);
+            doc.setCharacterAttributes(index, chaineARechercher.length(), jaune,
+                                                                    true);
 
             // on passe à prochaine occurence
             index += chaineARechercher.length();
@@ -463,7 +470,7 @@ public class Fonctions {
 
         // on cherche les occurences du mot rechercher
         // (chaineCaratereRecherchee)
-        while (index != -1) {
+        while (occurenceExiste(index)) {
 
             // on eneleve les occurence du mot rechercher
             // (chaineCaratereRecherchee) à partir de leur index
@@ -526,7 +533,7 @@ public class Fonctions {
             int index = chercheProchaineOccurence();
 
             // on vérifie que l'occurrence existe
-            if (index != -1) {
+            if (occurenceExiste(index)) {
 
                 // on remplace l'occurrence par la chaine de caractere à
                 // remplacer
@@ -551,6 +558,17 @@ public class Fonctions {
         return directionArriere.isSelected() ?
                 texte.indexOf(chaineARechercher, dernierePositionTrouve)
                 : texte.lastIndexOf(chaineARechercher, dernierePositionTrouve);
+    }
+
+    /**
+     * Sous-programme qui verifie si l'index de l'occurences existe
+     *
+     * @param index qu'on verifie
+     * @return une boolean qui indique l'existance de l'occurence
+     */
+    private boolean occurenceExiste(int index){
+
+        return index != -1;
     }
 
 
