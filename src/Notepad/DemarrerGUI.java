@@ -8,9 +8,9 @@ package Notepad;
  *    a aussi une fonctionnalité de recherche et de remplacement de mots qu'on accède via
  *    la commande ‘Ctrl+f’.</p>
  *
- * <p>Classe	: </p>
+ * <p>Classe	: DemarrerGUI</p>
  *
- * <p>Desc		: </p>
+ * <p>Desc		: Le main, commence l'application en instanciant un nouveau CadreGUI (qui hérite de JFrame).</p>
  *
  * @author Josue Jesus Aliaga Guillen, Noah Boivin, Simon Dion, Souhayl Farsane
  *
