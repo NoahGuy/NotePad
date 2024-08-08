@@ -40,16 +40,28 @@ public class Fonctions {
     private BarreEtat barreEtat;
 
     //pour la recherche
+
+    // Attribut pour le surlignage
     private SimpleAttributeSet rouge;
     private SimpleAttributeSet vert;
     private SimpleAttributeSet jaune;
     private SimpleAttributeSet defaut;
     private StyledDocument doc;
+
+    // Variable qui prend le Texte du JTextPane
     private String texte;
+
+    // Text ecris des barre de recherche et barre pour le remplacement d
     private String chaineARechercher;
     private String chaineARemplacer;
+
+    // Position du surlignage en vert
     private int dernierePositionTrouve;
+
+    // Option de la recherche
     private JRadioButton directionArriere;
+
+    // Position du Curseur courant
     private int positionCurseurCourante;
 
     public Fonctions(CadreGUI cadre, JTextPane textPane, BarreEtat barreEtat) {
@@ -206,7 +218,21 @@ public class Fonctions {
         barreEtat.setVisible(!barreEtat.isVisible());
     }
 
-    public void rechercher(String chaineARechercher, JCheckBox caseSensibleCasse, JRadioButton directionArriere) {
+    /**
+     * Fonction qui surligne en rouge où se situe le curseur et qui surligne
+     * en jaune l'occurence de la chaine à rechercher et qui surligne en vert
+     * l'occurence qui est situé après la position du curseur
+     *
+     * @param chaineARechercher qui est écrit dans le panneau de recherche
+     *                          ("Trouver")
+     * @param caseSensibleCasse un JCheckBox qu'on peut selecetionner pour la
+     *                          recherche à case sensible
+     * @param directionArriere  un JRadioButton qui demande vers quelle
+     *                          direction l'utilisateur veut faire sa recherche
+     */
+    public void rechercher(String chaineARechercher,
+                           JCheckBox caseSensibleCasse,
+                           JRadioButton directionArriere) {
 
         this.directionArriere = directionArriere;
         this.chaineARechercher = chaineARechercher;
