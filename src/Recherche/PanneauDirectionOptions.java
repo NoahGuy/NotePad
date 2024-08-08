@@ -104,11 +104,19 @@ public class PanneauDirectionOptions extends JPanel{
 		add(options);
 	}
 
+	/**
+	 * retourne le JRadioButton qui dit si la direction arriere est selectionné.
+	 * @return JRadioButton caseArriere
+	 */
 	public JRadioButton getCaseArriere() {
 
 		return caseArriere;
 	}
 
+	/**
+	 * retourne le JCheckBox qui dit si la recherche doit être sensible àla casse.
+	 * @return JCheckBox sensibleCasse
+	 */
 	public JCheckBox getSensibleCasse() {
 
 		return sensibleCasse;
