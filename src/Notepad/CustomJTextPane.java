@@ -39,7 +39,6 @@ import static java.awt.event.KeyEvent.*;
 public class CustomJTextPane extends JTextPane {
 
     protected Fonctions fonctions;
-    protected StyledDocument doc;
 
     public CustomJTextPane(CadreGUI cadre, PanneauPrincipal panneauPrincipal) {
 
@@ -52,20 +51,22 @@ public class CustomJTextPane extends JTextPane {
         initComposants(fonctions);
 
 
-
-//        JScrollPane scrollPane = new JScrollPane(this);
-//        panneauPrincipal.add(scrollPane, BorderLayout.CENTER);
-//
-//        // Enable mouse wheel scrolling in the JScrollPane
-//        scrollPane.setWheelScrollingEnabled(true);
-
+        bindCtrlS();
         bindZoom();
     }
 
-    /**
-     * initialize la police du JTextPane afin que chaque lettre prenne le même nombre de pixels
-     * afin d'avoir ligne et colonne dans la barre état.
-     */
+    private void bindCtrlS() {
+
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_S, CTRL_DOWN_MASK), "Save");
+
+        getActionMap().put("Save", new AbstractAction() {
+
+            public void actionPerformed(ActionEvent e) {
+
+                fonctions.save();
+            }
+        });
+    }
 
 
     private void initComposants(Fonctions fonctions) {
