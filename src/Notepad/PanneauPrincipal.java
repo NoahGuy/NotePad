@@ -37,7 +37,7 @@ public class PanneauPrincipal extends JPanel {
     private void initComposants() {
         setLayout(new BorderLayout());
 
-        
+
         // SimpleAttributeSet.SetFontStyle(..., "monospaced"); // Exemple de code pour définir le style de police
     }
 }
