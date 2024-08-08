@@ -14,22 +14,23 @@ import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
  *    a aussi une fonctionnalité de recherche et de remplacement de mots qu'on accède via
  *    la commande ‘Ctrl+f’.</p>
  *
- * <p>Classe	: </p>
+ * <p>Classe	: CadreGUI</p>
  *
- * <p>Desc		: </p>
- *
- * @author Josue Jesus Aliaga Guillen, Noah Boivin, Simon Dion, Souhayl Farsane
+ * <p>Desc		: Cette classe représente la fenêtre principale de l'application
+ *                d'édition de texte.</p>
  *
  * @version 07/08/24
  */
 
 public class CadreGUI extends JFrame {
+
     private PanneauPrincipal panneauPrincipal;
     private Fonctions fonctions;
     private MonJMenuBar monMenuBar;
     private JTextPaneCtrlFYZ textPane;
     private JScrollPane scroll;
 
+    // Constructeur de la fenêtre principale
     public CadreGUI() {
 
         initComposants();
@@ -43,8 +44,8 @@ public class CadreGUI extends JFrame {
         setVisible(true);
     }
 
+    // Méthode pour initialiser les composants de la fenêtre
     public void initComposants() {
-
 
         panneauPrincipal = new PanneauPrincipal(this);
 
@@ -59,7 +60,5 @@ public class CadreGUI extends JFrame {
         scroll = new JScrollPane(textPane, VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setBorder(BorderFactory.createEmptyBorder());
         panneauPrincipal.add(scroll, "Center");
-
     }
-
 }
