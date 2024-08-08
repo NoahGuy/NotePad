@@ -26,7 +26,6 @@ import javax.swing.JMenuItem;
 
 public class MonJMenuBar extends JMenuBar implements ActionListener {
     private JMenu menuFichier;
-    private JMenu menuModifier;
     private JMenu menuAfficher;
     private JMenuItem itemNouveau;
     private JMenuItem itemOuvrir;
@@ -58,8 +57,7 @@ public class MonJMenuBar extends JMenuBar implements ActionListener {
 
         menuFichier = new JMenu("Fichier");
         add(this.menuFichier);
-        menuModifier = new JMenu("Modifier");
-        add(this.menuModifier);
+
         menuAfficher = new JMenu("Affichage");
         add(this.menuAfficher);
     }
