@@ -18,33 +18,40 @@ import static java.awt.event.KeyEvent.*;
  *    a aussi une fonctionnalité de recherche et de remplacement de mots qu'on accède via
  *    la commande ‘Ctrl+f’.</p>
  *
- * <p>Classe	: </p>
+ * <p>Classe	: JTextPaneCtrlFYZ </p>
  *
- * <p>Desc		: </p>
+ * <p>Desc		: hérite de CustomJTextPane et ajoute des methodes pour ajouter les fonctions de recherche à ctrl F,
+ *  *              ainsi que undo et redo à ctrl z et y</p>
  *
  * @author Josue Jesus Aliaga Guillen, Noah Boivin, Simon Dion, Souhayl Farsane
  *
  * @version 07/08/24
  */
-
-/**
- * herite de CustomJTextPane et ajoute des methodes pour bind les fonctions de recherche à ctrl F, ainsi que
- * undo et redo à ctrl z et y
- */
 public class JTextPaneCtrlFYZ extends CustomJTextPane {
 
-    private UndoManager undoManager;
-    private Document doc;
+    private UndoManager undoManager; //gère les modifications au document qui peuvent être undo/redo
+    private Document doc; //document du textpane auquel les modifications sont effectuées
 
 
+    /**
+     * Constructeur pour JTextPaneCtrlFYZ
+     *
+     * @param cadreGUI  cadre qu'on passe au constructeur de CustomJTextPane
+     * @param panneauPrincipal  panneau qu'on passe au constructeur de CustomJTextPane
+     */
     public JTextPaneCtrlFYZ(CadreGUI cadreGUI, PanneauPrincipal panneauPrincipal) {
 
         super(cadreGUI, panneauPrincipal);
+
         initComposants();
+
         bindUndoRedo();
         bindCtrlF();
     }
 
+    /**
+     * initialise les attributs de la classe
+     */
     private void initComposants() {
 
 
@@ -52,10 +59,13 @@ public class JTextPaneCtrlFYZ extends CustomJTextPane {
         this.doc = this.getDocument();
     }
 
+    /**
+     * Permet d'executer la ouvrirPanneauRecherche quand on appuie sur ctrl F.
+     */
     private void bindCtrlF() {
-        this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_F, CTRL_DOWN_MASK), "Search");
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_F, CTRL_DOWN_MASK), "Search");
 
-        this.getActionMap().put("Search", new AbstractAction() {
+        getActionMap().put("Search", new AbstractAction() {
 
             public void actionPerformed(ActionEvent e) {
                 fonctions.ouvrirPanneauRecherche(fonctions);
@@ -63,6 +73,10 @@ public class JTextPaneCtrlFYZ extends CustomJTextPane {
         });
     }
 
+    /**
+     * Ajoute un ecouteur  de modifications sur le document et appele les methodes qui permettent d'undo/redo
+     * ces modifications quand on appuie sur ctrl z et ctrl y
+     */
     private void bindUndoRedo() {
 
         doc.addUndoableEditListener(new UndoableEditListener() {
@@ -78,6 +92,9 @@ public class JTextPaneCtrlFYZ extends CustomJTextPane {
     }
 
 
+    /**
+     * Permet de redo une modification quand on appuie sur ctrl Y.
+     */
     private void bindCtrlY() {
 
         this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_Y, CTRL_DOWN_MASK), "Redo");
@@ -94,6 +111,9 @@ public class JTextPaneCtrlFYZ extends CustomJTextPane {
         });
     }
 
+    /**
+     * Permet d'undo une modification quand on appuie sur ctrl Z.
+     */
     private void bindCtrlZ() {
 
         this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(VK_Z, CTRL_DOWN_MASK), "Undo");
