@@ -234,8 +234,12 @@ public class Fonctions {
                            JCheckBox caseSensibleCasse,
                            JRadioButton directionArriere) {
 
+        // on prend l'option de la recherche
         this.directionArriere = directionArriere;
+
+        // on prend la chaine de caractaire qu'on veut rechercher
         this.chaineARechercher = chaineARechercher;
+
         // on prend Le texte qu'on a ecris dans le JTextPane en String
         //JTextPane leText = cadre.getPanneauPrincipal().getTextPane();
         texte = textPane.getText();
@@ -253,26 +257,30 @@ public class Fonctions {
         jaune = new SimpleAttributeSet();
         StyleConstants.setBackground(jaune, Color.YELLOW);
 
+        // le style par Defaut
         defaut = new SimpleAttributeSet();
 
-        // on prend ce qu'on a ecris dans la barre de recherche en
-        // String
-        //chaineCaratereRecherchee = barRecherche.getText();
 
         // on obtient la position du curseur actuel
         int positionCurseur = textPane.getCaretPosition();
 
+        // on verifie si la position du curseur à changer
         if (positionCurseur != positionCurseurCourante) {
+
+            // si c'est le cas alors on fait la recherche à partir de la
+            // position courante du curseur
             dernierePositionTrouve = positionCurseur;
+
+            // on change la valeur de la position du curseur courante
             positionCurseurCourante = positionCurseur;
         }
+
 
 
         if (dernierePositionTrouve == 0) {
 
             dernierePositionTrouve = positionCurseur;
         }
-        //dernierePositionTrouve = positionCurseur;
 
         // apres une nouvelle recherche, on remet le texte à son style par
         // defaut
@@ -286,6 +294,7 @@ public class Fonctions {
             chaineARechercher = chaineARechercher.toLowerCase();
             texte = texte.toLowerCase();
         }
+
         // on surligne en jaune tous les occurences
         surlignerEnJaune();
 
@@ -296,6 +305,11 @@ public class Fonctions {
         doc.setCharacterAttributes(positionCurseur, 1, rouge, true);
     }
 
+    /**
+     *
+     * Sous-programme qui permet au surlignage vert
+     *
+     */
     private void surlignerEnVert() {
 
         if (!directionArriere.isSelected()) {
@@ -340,6 +354,10 @@ public class Fonctions {
 
     }
 
+    /**
+     * Sous-programme qui surligne en jaune toutes les occurrences
+     *
+     */
     private void surlignerEnJaune() {
 
         // on transforme le texte ecris en String et remplace les \n par du
@@ -356,16 +374,25 @@ public class Fonctions {
             doc.setCharacterAttributes(index, chaineARechercher.length(), jaune, true);
 
             // on passe à prochaine occurence
-            index += chaineARechercher.length()-1;
+            index += chaineARechercher.length();
 
         }
     }
 
-    public void setDernierePositionTrouve(int dernierePositionTrouve) {
+    /**
+     * Fonction qui met qui la derniere position trouve à une certaine position
+     *
+     * @param position qu'on veut set à "dernierePositionTrouve"
+     */
+    public void setDernierePositionTrouve(int position) {
 
-        this.dernierePositionTrouve = dernierePositionTrouve;
+        this.dernierePositionTrouve = position;
     }
 
+    /**
+     * Fonction qui enleve tout les surlignage du JTextPane
+     *
+     */
     public void enleverSurlignage() {
 
         doc.setCharacterAttributes(0, doc.getLength(), defaut, true);
