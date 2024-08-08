@@ -275,13 +275,6 @@ public class Fonctions {
             positionCurseurCourante = positionCurseur;
         }
 
-
-
-        if (dernierePositionTrouve == 0) {
-
-            dernierePositionTrouve = positionCurseur;
-        }
-
         // apres une nouvelle recherche, on remet le texte à son style par
         // defaut
         enleverSurlignage();
@@ -399,12 +392,19 @@ public class Fonctions {
     }
 
     /**
-     * Remplace tout les occurence par la chaine de caractère à remplacer
+     * Remplace toutes les occurence par la chaine de caractère à remplacer
      *
-     * @param chaineARechercher
-     * @param chaineARemplacer
-     * @param caseSensibleCasse
-     * @param directionArriere
+     * @param chaineARechercher qui est écrit dans le panneau de recherche
+     *                          dans la barre de recherche ("Trouver")
+     *
+     * @param chaineARemplacer  qui est écrit dans le panneau de recherche dans
+     *                          la barre de remplacement ("Remplacer")
+     *
+     * @param caseSensibleCasse un JCheckBox qu'on peut selecetionner pour la
+     *                          recherche à case sensible
+     *
+     * @param directionArriere  un JRadioButton qui demande vers quelle
+     *                          direction l'utilisateur veut faire sa recherche
      */
     public void remplacer(String chaineARechercher,
                                     String chaineARemplacer,
@@ -417,28 +417,32 @@ public class Fonctions {
         this.chaineARemplacer = chaineARemplacer;
         this.directionArriere = directionArriere;
 
-        // pour les case sensible
-        if (!caseSensibleCasse.isSelected()) {
+        // On verifie que l'utilisateur à ecris dans la barre de remplacement
+        if(chaineARemplacer != null){
 
-            chaineARechercher = chaineARechercher.toLowerCase();
-            texte = texte.toLowerCase();
+            // pour les case sensible
+            if (!caseSensibleCasse.isSelected()) {
+
+                chaineARechercher = chaineARechercher.toLowerCase();
+                texte = texte.toLowerCase();
+            }
+
+
+            try {
+
+                // on remplace toutes les occurrences trouvées par
+                // chaineARemplacer
+                remplacerTout();
+            } catch (BadLocationException ex) {
+
+                throw new RuntimeException(ex);
+            }
         }
-
-
-        try {
-
-            remplacerTout();
-        } catch (BadLocationException ex) {
-
-            throw new RuntimeException(ex);
-        }
-
-
     }
 
 
     /**
-     * fonction qui permet la recherche de tout les occurence et remplace par
+     * Fonction qui permet la recherche de tout les occurence et remplace par
      * une autre chaine de caractere
      *
      * @throws BadLocationException
@@ -459,7 +463,7 @@ public class Fonctions {
 
         // on cherche les occurences du mot rechercher
         // (chaineCaratereRecherchee)
-        while (index >= 0) {
+        while (index != -1) {
 
             // on eneleve les occurence du mot rechercher
             // (chaineCaratereRecherchee) à partir de leur index
@@ -481,13 +485,20 @@ public class Fonctions {
 
     /**
      *
-     * permet de remplacer une seul occurence et surligne en vert l'occurence
+     * Permet de remplacer une seule occurrence et surligne en vert l'occurrence
      * suivante
      *
-     * @param chaineARechercher
-     * @param chaineARemplacer
-     * @param caseSensibleCasse
-     * @param directionArriere
+     * @param chaineARechercher qui est écrit dans le panneau de recherche
+     *                          dans la barre de recherche ("Trouver")
+     *
+     * @param chaineARemplacer  qui est écrit dans le panneau de recherche dans
+     *                          la barre de remplacement ("Remplacer")
+     *
+     * @param caseSensibleCasse un JCheckBox qu'on peut selecetionner pour la
+     *                          recherche à case sensible
+     *
+     * @param directionArriere  un JRadioButton qui demande vers quelle
+     *                          direction l'utilisateur veut faire sa recherche
      */
     public void remplacerOccurrenceSurligneeEnVert(String chaineARechercher,
                                                    String chaineARemplacer,
@@ -497,7 +508,7 @@ public class Fonctions {
         this.chaineARechercher = chaineARechercher;
         this.chaineARemplacer = chaineARemplacer;
         this.directionArriere = directionArriere;
-        this.texte = textPane.getText();
+        texte = textPane.getText();
 
 
         // verifie l'option de la case sensible
@@ -508,15 +519,16 @@ public class Fonctions {
 
         try {
 
+            // on remplacce les \n par le vide pour facilité la recherche
             texte = texte.replace("\n", "");
 
-            // on prend l'index de l'occurence
+            // on prend l'index de l'occurence si elle existe sinon elle vaut -1
             int index = chercheProchaineOccurence();
 
+            // on vérifie que l'occurrence existe
+            if (index != -1) {
 
-            if (index >= 0) {
-
-                // on remplace l'occurence par la chaine de caractere a
+                // on remplace l'occurrence par la chaine de caractere à
                 // remplacer
                 doc.remove(index, chaineARechercher.length());
                 doc.insertString(index, chaineARemplacer, defaut);
@@ -532,7 +544,7 @@ public class Fonctions {
     /**
      * Cherche l'index de l'occurence selon la selection de la direction
      *
-     * @return l'index de l'occurence
+     * @return l'index de l'occurence sinon retourne -1 si elle n'existe pas
      */
     private int chercheProchaineOccurence() {
 
@@ -540,5 +552,7 @@ public class Fonctions {
                 texte.indexOf(chaineARechercher, dernierePositionTrouve)
                 : texte.lastIndexOf(chaineARechercher, dernierePositionTrouve);
     }
+
+
 
 }
