@@ -91,7 +91,7 @@ public class MonJMenuBar extends JMenuBar implements ActionListener {
 
         item.addActionListener(this);
         item.setActionCommand(nom);
-        
+
         menu.add(item);
         return item;
     }
