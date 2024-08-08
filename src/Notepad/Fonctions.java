@@ -335,7 +335,7 @@ public class Fonctions {
             if (!occurenceExiste(index)) {
 
                 dernierePositionTrouve = texte.length();
-                
+
                 index = texte.lastIndexOf(chaineARechercher,
                                             dernierePositionTrouve);
             }
@@ -427,7 +427,9 @@ public class Fonctions {
         // On verifie que l'utilisateur à ecris dans la barre de remplacement
         if(chaineARemplacer != null){
 
-            // pour les case sensible
+            // si le check box pour case sensitive n'est pas coché alors
+            // on transforme le text et la chaine de caractère recherchee
+            // tout en minuscule
             if (!caseSensibleCasse.isSelected()) {
 
                 chaineARechercher = chaineARechercher.toLowerCase();
@@ -518,8 +520,11 @@ public class Fonctions {
         texte = textPane.getText();
 
 
-        // verifie l'option de la case sensible
+        // si le check box pour case sensitive n'est pas coché alors
+        // on transforme le text et la chaine de caractère recherchee
+        // tout en minuscule
         if (!caseSensibleCasse.isSelected()) {
+
             chaineARechercher = chaineARechercher.toLowerCase();
             texte = texte.toLowerCase();
         }
