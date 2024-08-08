@@ -21,9 +21,10 @@ import static java.awt.FileDialog.SAVE;
  *    a aussi une fonctionnalité de recherche et de remplacement de mots qu'on accède via
  *    la commande ‘Ctrl+f’.</p>
  *
- * <p>Classe	: </p>
+ * <p>Classe	: Fonctions </p>
  *
- * <p>Desc		: </p>
+ * <p>Desc		: Classe qui regroupe toutes les fonctions, permet d'éviter la répétition du code quand une fonction
+ *                doit etre appelée par les touches du clavier ainsi que par un menu.</p>
  *
  * @author Josue Jesus Aliaga Guillen, Noah Boivin, Simon Dion, Souhayl Farsane
  *
@@ -31,13 +32,20 @@ import static java.awt.FileDialog.SAVE;
  */
 
 public class Fonctions {
+
+    // constantes pour les tailles maximales, minimales et defaut de la police afin d'avoir un zoom max et un zoom min
     private static final int MAX_FONT_SIZE = 60;
     private static final int MIN_FONT_SIZE = 2;
-    private CadreGUI cadre;
-    protected String nomFichier;
-    private String adresseFichier;
-    private JTextPane textPane;
-    private BarreEtat barreEtat;
+    private static final float DEFAULT_FONT_SIZE = 12F;
+
+
+    private CadreGUI cadre; // Le cadre du bloc notes, afin de modifier son nom quand necessaire
+
+    protected String nomFichier; // le nom du fichier texte
+    private String adresseFichier; // l'adresse du fichier texte
+
+    private JTextPane textPane; // le text pane, qu'on doit modifier quand on ouvre un fichier ou qu'on zoom
+    private BarreEtat barreEtat; // la barre état, afin de la rendre visible ou pas et de modifier l'affichage du zoom
 
     //pour la recherche
 
@@ -64,14 +72,22 @@ public class Fonctions {
     // Position du Curseur courant
     private int positionCurseurCourante;
 
+    /**
+     * Constructeur de Fonctions
+     * @param cadre Le cadre du bloc notes, afin de modifier son nom quand necessaire.
+     * @param textPane Le text pane, qu'on doit modifier quand on ouvre un fichier ou qu'on zoom.
+     * @param barreEtat La barre état, afin de la rendre visible ou pas et de modifier l'affichage du zoom.
+     */
     public Fonctions(CadreGUI cadre, JTextPane textPane, BarreEtat barreEtat) {
 
         this.textPane = textPane;
-
         this.barreEtat = barreEtat;
         this.cadre = cadre;
     }
 
+    /**
+     * Fonction qui ouvre un nouveau fichier vide.
+     */
     public void nouveauFichier() {
         textPane.setText("");
         cadre.setTitle("Nouvelle page");
@@ -79,6 +95,9 @@ public class Fonctions {
         adresseFichier = null;
     }
 
+    /**
+     * Fonction qui ouvre un fichier existant.
+     */
     public void ouvrirFichier() {
 
         FileDialog fileDialog = new FileDialog((Frame) null, "Select a File", FileDialog.LOAD);
@@ -106,6 +125,9 @@ public class Fonctions {
     }
 
 
+    /**
+     * Fonction qui enregistre le fichier texte s'il' existe déja, sinon, qui l'enregistre sous.
+     */
     public void save() {
         if (nomFichier == null) {
 
@@ -128,6 +150,9 @@ public class Fonctions {
 
     }
 
+    /**
+     * Fonction qui enregistre le fichier texte sous.
+     */
     public void saveAs() {
 
         FileDialog fd = new FileDialog(this.cadre, "Sauvegarder en tant que", SAVE);
@@ -153,16 +178,19 @@ public class Fonctions {
 
     }
 
+    /**
+     * Fonction qui quitte et demande si l'utilisateur veut sauvegarder.
+     */
     public void quitter() {
 
         int option = JOptionPane.showConfirmDialog(cadre,
-                "Voulez-vous quitter et sauvegarder ?",
+                "Voulez-vous sauvegarder ?",
                 "Quitter",
                 JOptionPane.YES_NO_CANCEL_OPTION);
 
         if (option == JOptionPane.YES_OPTION) {
 
-            saveAs();
+            save();
             System.exit(0);
         } else if (option == JOptionPane.NO_OPTION) {
 
@@ -170,49 +198,77 @@ public class Fonctions {
         }
     }
 
+    /**
+     * Fonction qui augmente le zoom en augmentant la taille de police.
+     */
     public void zoomIn() {
 
         Font currentFont = textPane.getFont();
 
+        //si la taille de la police n'est pas au maximum
         if (currentFont.getSize() < MAX_FONT_SIZE) {
 
             float newSize = (float) currentFont.getSize() + 2.0F;
 
+            //calcule pourcentage d'augmentation
             int pourcentageAugmentation = calculerPourcentageZoom(newSize);
 
+            //augmente la taille
             textPane.setFont(currentFont.deriveFont(newSize));
+
+            //affiche le pourcentage d'augmentation sur la barre etat
             barreEtat.getZoom().setText(String.valueOf(pourcentageAugmentation) + "% ");
         }
 
     }
 
+    /**
+     * Fonction qui diminue le zoom en diminuant la taille de police.
+     */
     public void zoomOut() {
 
         Font currentFont = textPane.getFont();
 
+        //si la taille de la police n'est pas au minimum
         if (currentFont.getSize() > MIN_FONT_SIZE) {
 
             float newSize = (float) currentFont.getSize() - 2.0F;
 
+            //calcule pourcentage de diminution
             int pourcentageDiminution = calculerPourcentageZoom(newSize);
 
+            //diminue la taille
             textPane.setFont(currentFont.deriveFont(newSize));
+
+            //affiche le pourcentage de diminution surla barre etat
             barreEtat.getZoom().setText(String.valueOf(pourcentageDiminution) + "% ");
         }
 
     }
 
+    /**
+     * Calcule le pourcentage de changement du zoom.
+     * @param newSize nouvelle taille de police
+     * @return le purcentage de changement du zoom
+     */
     private int calculerPourcentageZoom(float newSize) {
 
-        return (int) (100.0F * (newSize / 12.0F));
+        return (int) (100.0F * (newSize / DEFAULT_FONT_SIZE));
     }
 
+    /**
+     * Ouvre le panneau de recherche et remplacement.
+     * @param fonctions Les fonctions afin de pouvoir les utiliser dans le panneau de recherche.
+     */
     public void ouvrirPanneauRecherche(Fonctions fonctions) {
 
         Cadre cadre = new Cadre("Rechercher/Remplacer", fonctions);
         SwingUtilities.invokeLater(cadre);
     }
 
+    /**
+     * Rend la barre etat visible ou pas.
+     */
     public void enleverRemettreBarreEtat() {
 
         barreEtat.setVisible(!barreEtat.isVisible());
